@@ -23,19 +23,19 @@ import java.io.IOException;
         public Agv(GamePanel gp, KeyHandler keyH){
             this.gp = gp;
             this.keyH = keyH;
-            solidArea = new Rectangle(8,16,32,32);
+            solidArea = new Rectangle(8,8,16,16);
             solidAreaDefaultX = solidArea.x;
             solidAreaDefaultY = solidArea.y;
             setDefaultValues();
             getPlayerImage();
-            arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
+            arial_17 = new Font("Arial",Font.PLAIN,17);
 
         }
         public void setDefaultValues(){
             worldX = 1*gp.tileSize;
             worldY = 14*gp.tileSize;
-            speed = 2;
-            direction="down";
+            speed = 4;
+            //direction="down";
         }
         public void getPlayerImage(){
 
@@ -70,37 +70,37 @@ import java.io.IOException;
             g2.drawString(message,gp.tileSize*25,gp.tileSize*20);
         }
         public void update(){
-            if(keyH.leftPressed==true || keyH.downPressed==true || keyH.upPressed==true || keyH.rightPressed==true){
-                if(keyH.upPressed==true){
+            if(keyH.leftPressed || keyH.downPressed || keyH.upPressed || keyH.rightPressed){
+                if(keyH.upPressed){
                     direction="up";
                 }
-                else if(keyH.downPressed==true){
+                else if(keyH.downPressed){
                     direction="down";
                 }
-                else if(keyH.rightPressed==true){
+                else if(keyH.rightPressed){
                     direction="right";
                 }
-                else if(keyH.leftPressed==true){
+                else if(keyH.leftPressed){
                     direction="left";
                 }
                 //CHECK TILE COLLISION
-                collisionOn=false;
-               // gp.cChecker.CheckTile(this);
+                collisionOn = false;
+                gp.cChecker.CheckTile(this);
                 //CHECK OBJECT COLLISION
                 //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
-                if(collisionOn==false){
+                if(collisionOn == false){
                     switch (direction){
                         case "up":
-                            worldY-=speed;
+                            worldY -= speed;
                             break;
                         case "down":
-                            worldY+=speed;
+                            worldY += speed;
                             break;
                         case "left":
-                            worldX-=speed;
+                            worldX -= speed;
                             break;
                         case "right":
-                            worldX+=speed;
+                            worldX += speed;
                             break;
                     }
                 }

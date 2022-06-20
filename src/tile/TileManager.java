@@ -49,17 +49,17 @@ public class TileManager {
     }
     public void getTileImage(){
 
-        setup(0, "0", false);
+        setup(0, "0", true);
         setup(1, "1", false);
         setup(2, "2", false);
         setup(3, "3", false);
         setup(4, "4", false);
-        setup(5, "5", false);
+        setup(5, "5", true);
         setup(6, "6", false);
         setup(7, "7", false);
         setup(8, "8", false);
         setup(9, "9", false);
-        setup(10, "10", false);
+        setup(10, "10", true);
         setup(11, "11", false);
         setup(12, "12", false);
         setup(13, "13", false);
@@ -79,7 +79,7 @@ public class TileManager {
             tile[index] = new Tile();
             tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
             tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
-            //tile[index].collision = collision;
+            tile[index].collison = collision;
 
         } catch (IOException e) {
             e.printStackTrace();
