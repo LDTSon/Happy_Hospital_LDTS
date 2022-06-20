@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 public class Entity {
     public int worldX,worldY;
     public int speed;
-    public BufferedImage agvImage;
+    public BufferedImage entityImage;
     public String direction;
 
     public int spriteCounter=0;

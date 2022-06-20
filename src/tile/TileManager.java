@@ -1,6 +1,7 @@
 package tile;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -47,73 +48,49 @@ public class TileManager {
         }
     }
     public void getTileImage(){
+
+        setup(0, "0", false);
+        setup(1, "1", false);
+        setup(2, "2", false);
+        setup(3, "3", false);
+        setup(4, "4", false);
+        setup(5, "5", false);
+        setup(6, "6", false);
+        setup(7, "7", false);
+        setup(8, "8", false);
+        setup(9, "9", false);
+        setup(10, "10", false);
+        setup(11, "11", false);
+        setup(12, "12", false);
+        setup(13, "13", false);
+        setup(14, "14", false);
+        setup(15, "15", false);
+        setup(16, "16", false);
+        setup(17, "17", false);
+        setup(18, "18", false);
+
+    }
+
+    public void setup(int index, String imageName, boolean collision) {
+
+        UtilityTool uTool = new UtilityTool();
+
         try{
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/0.png"));
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
+            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            //tile[index].collision = collision;
 
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/1.png"));
-
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/2.png"));
-
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/3.png"));
-
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/4.png"));
-
-            tile[5] = new Tile();
-            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/5.png"));
-
-            tile[6] = new Tile();
-            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/6.png"));
-
-            tile[7] = new Tile();
-            tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/7.png"));
-
-            tile[8] = new Tile();
-            tile[8].image = ImageIO.read(getClass().getResourceAsStream("/tiles/8.png"));
-
-            tile[9] = new Tile();
-            tile[9].image = ImageIO.read(getClass().getResourceAsStream("/tiles/9.png"));
-
-            tile[10] = new Tile();
-            tile[10].image = ImageIO.read(getClass().getResourceAsStream("/tiles/10.png"));
-
-            tile[11] = new Tile();
-            tile[11].image = ImageIO.read(getClass().getResourceAsStream("/tiles/11.png"));
-
-            tile[12] = new Tile();
-            tile[12].image = ImageIO.read(getClass().getResourceAsStream("/tiles/12.png"));
-
-            tile[13] = new Tile();
-            tile[13].image = ImageIO.read(getClass().getResourceAsStream("/tiles/13.png"));
-
-            tile[14] = new Tile();
-            tile[14].image = ImageIO.read(getClass().getResourceAsStream("/tiles/14.png"));
-
-            tile[15] = new Tile();
-            tile[15].image = ImageIO.read(getClass().getResourceAsStream("/tiles/15.png"));
-
-            tile[16] = new Tile();
-            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/tiles/16.png"));
-
-            tile[17] = new Tile();
-            tile[17].image = ImageIO.read(getClass().getResourceAsStream("/tiles/17.png"));
-
-            tile[18] = new Tile();
-            tile[18].image = ImageIO.read(getClass().getResourceAsStream("/tiles/18.png"));
-
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public void draw(Graphics2D g2){
         int worldCol = 0;
         int worldRow = 0;
 
-        while(worldCol<gp.maxScreenCol && worldRow<gp.maxScreenRow){
+        while(worldCol < gp.maxScreenCol && worldRow < gp.maxScreenRow){
 
             int tileNum = mapTileNum[worldRow][worldCol];
 
@@ -121,13 +98,13 @@ public class TileManager {
             int screenY = worldRow*gp.tileSize;
 
 
-            g2.drawImage(tile[tileNum].image,screenX,screenY,gp.tileSize,gp.tileSize,null);
+            g2.drawImage(tile[tileNum].image, screenX, screenY, 32, 32,null);
 
             worldCol++;
 
             if(worldCol == gp.maxScreenCol){
                 worldCol = 0;
-                worldRow++;
+                worldRow ++;
             }
         }
     }

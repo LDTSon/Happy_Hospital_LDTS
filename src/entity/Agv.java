@@ -3,9 +3,11 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
     public class Agv extends Entity {
@@ -16,35 +18,46 @@ import java.io.IOException;
         Font arial_17;
         GamePanel gp;
         KeyHandler keyH;
-        public final int screenX;
-        public final int screenY;
-        public int hasKey=0;
+        public int hasKey = 0;
 
         public Agv(GamePanel gp, KeyHandler keyH){
-            this.gp=gp;
-            this.keyH=keyH;
-            solidArea=new Rectangle(8,16,32,32);
-            solidAreaDefaultX=solidArea.x;
-            solidAreaDefaultY=solidArea.y;
+            this.gp = gp;
+            this.keyH = keyH;
+            solidArea = new Rectangle(8,16,32,32);
+            solidAreaDefaultX = solidArea.x;
+            solidAreaDefaultY = solidArea.y;
             setDefaultValues();
             getPlayerImage();
-            screenX=gp.screenWidth/2 -gp.tileSize/2;
-            screenY=gp.screenHeight/2-gp.tileSize/2;
-            arial_17=new Font("Arial",Font.TYPE1_FONT,17);
+            arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
 
         }
         public void setDefaultValues(){
-            worldX=21*gp.tileSize;
-            worldY=23*gp.tileSize;
-            speed=2;
+            worldX = 1*gp.tileSize;
+            worldY = 14*gp.tileSize;
+            speed = 2;
             direction="down";
         }
         public void getPlayerImage(){
+
+            entityImage = setup("agv");
+
+        }
+
+        public BufferedImage setup(String imageName) {
+
+            UtilityTool uTool = new UtilityTool();
+            BufferedImage image = null;
+
             try{
-                agvImage=ImageIO.read(getClass().getResourceAsStream("/res/agv.png"));
-            }catch (IOException e){
+                image = ImageIO.read(getClass().getResourceAsStream("/res/" + imageName + ".png"));
+                image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+                //tile[index].collision = collision;
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            return image;
         }
         public void ToastInvalidMove(Graphics2D g2){
             String message="Di chuyển không hợp lệ!";
@@ -100,11 +113,11 @@ import java.io.IOException;
             g2.setFont(arial_17);
             g2.setColor(Color.green);
             String text="AGV";
-            int textLength=(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
-            int x=worldX+16-textLength/2;
-            int y=worldY-6;
+            int textLength = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
+            int x = worldX+16-textLength/2;
+            int y = worldY-6;
             g2.drawString(text,x,y);
-            g2.drawImage(agvImage,worldX,worldY,32,32,null);
+            g2.drawImage(entityImage,worldX,worldY,32,32,null);
 
         }
     }
