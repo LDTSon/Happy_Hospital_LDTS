@@ -28,13 +28,14 @@ public class TileManager {
     public void loadMap(String filePath){
         try{
             InputStream is = getClass().getResourceAsStream(filePath);
+            assert is != null;
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             int col = 0;
             int row = 0;
 
             while(col < gp.maxScreenCol && row < gp.maxScreenRow){
                 String line = br.readLine();
-                String number[] = line.split(" ");
+                String[] number = line.split(" ");
 
                 while(col < gp.maxScreenCol){
                     int num = Integer.parseInt(number[col]);
@@ -48,7 +49,7 @@ public class TileManager {
             }
             br.close();
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
     public void getTileImage(){

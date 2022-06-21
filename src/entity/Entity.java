@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.String;
 public class Entity {
-    public int worldX,worldY;
+    public int x, y;
     public int speed;
     public BufferedImage entityImage;
     public String direction;

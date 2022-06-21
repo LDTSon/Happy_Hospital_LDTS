@@ -34,8 +34,8 @@ import java.io.IOException;
             arial_30=new Font("Arial",Font.TYPE1_FONT,30);
         }
         public void setDefaultValues(){
-            worldX=2*gp.tileSize;
-            worldY=13*gp.tileSize;
+            x =2*gp.tileSize;
+            y =13*gp.tileSize;
             speed=1;
             direction="right";
         }
@@ -60,9 +60,9 @@ import java.io.IOException;
             g2.drawString(message,gp.tileSize*20,gp.tileSize*14);
         }
         public void checkDirection() {
-            int midX = worldX+ gp.tileSize/2 ;
-            int midY = worldY+6 +gp.tileSize/2 ;
-            System.out.println(worldX +" "+ worldY);
+            int midX = x + gp.tileSize/2 ;
+            int midY = y +6 +gp.tileSize/2 ;
+            System.out.println(x +" "+ y);
             midX = midX / gp.tileSize;
             midY = midY / gp.tileSize;
 
@@ -106,16 +106,16 @@ import java.io.IOException;
                 if(collisionOn==false && isImmortal==false) {
                     switch (direction) {
                         case "up":
-                            worldY -= speed;
+                            y -= speed;
                             break;
                         case "down":
-                            worldY += speed;
+                            y += speed;
                             break;
                         case "left":
-                            worldX -= speed;
+                            x -= speed;
                             break;
                         case "right":
-                            worldX += speed;
+                            x += speed;
                             break;
                     }
                 }
@@ -130,11 +130,11 @@ import java.io.IOException;
             g2.setColor(Color.green);
             String text="AGV";
             int textLength=(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
-            int x=worldX+12-textLength/2;
-            int y=worldY-6;
+            int x= this.x +12-textLength/2;
+            int y= this.y -6;
             g2.drawString(text,x,y);
             if(isImmortal==true) ToastInvalidMove(g2);
-            g2.drawImage(entityImage,worldX,worldY,gp.tileSize,gp.tileSize,null);
+            g2.drawImage(entityImage, this.x, this.y,gp.tileSize,gp.tileSize,null);
 
         }
     }

@@ -154,7 +154,7 @@
 //                { winner = i; }
 //            }
 //            Node2D current = openSet[winner];
-//            if (Objects.equals(openSet[winner], end)) {
+//            if (Objects.equals(openSet[winner], end)) {//???
 //                Node2D cur = this.nodes[end.x][end.y];
 //                push(path, cur);
 //                while (previous[cur.x][cur.y] != null) {
@@ -256,6 +256,7 @@
 //        Collections.reverse(Arrays.asList(Arr));
 //        return Arr;
 //    }
+//
 //}
 //
 //
