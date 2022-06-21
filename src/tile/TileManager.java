@@ -20,6 +20,10 @@ public class TileManager {
         getTileImage();
         mapTileNum = new int[100][100];
         loadMap("/res/map.txt");
+        tile[4].tileDirection="left";
+        tile[6].tileDirection="right";
+        tile[8].tileDirection="up";
+        tile[2].tileDirection="down";
     }
     public void loadMap(String filePath){
         try{
@@ -30,7 +34,7 @@ public class TileManager {
 
             while(col < gp.maxScreenCol && row < gp.maxScreenRow){
                 String line = br.readLine();
-                String number[] = line.split(" ");
+                String number[] = line.split("  ");
 
                 while(col < gp.maxScreenCol){
                     int num = Integer.parseInt(number[col]);
@@ -98,7 +102,7 @@ public class TileManager {
             int screenY = worldRow*gp.tileSize;
 
 
-            g2.drawImage(tile[tileNum].image, screenX, screenY, 32, 32,null);
+            g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize,null);
 
             worldCol++;
 
