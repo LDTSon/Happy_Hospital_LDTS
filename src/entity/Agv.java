@@ -23,7 +23,7 @@ import java.io.IOException;
         public Agv(GamePanel gp, KeyHandler keyH){
             this.gp=gp;
             this.keyH=keyH;
-            solidArea=new Rectangle(4,4,12,12);
+            solidArea=new Rectangle(8,8,16,16);
             solidAreaDefaultX=solidArea.x;
             solidAreaDefaultY=solidArea.y;
             setDefaultValues();
