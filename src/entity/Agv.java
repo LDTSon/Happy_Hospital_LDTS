@@ -41,7 +41,7 @@ import java.io.IOException;
         }
         public void getPlayerImage(){
             try{
-                agvImage=ImageIO.read(getClass().getResourceAsStream("/res/agv.png"));
+                entityImage=ImageIO.read(getClass().getResourceAsStream("/res/agv.png"));
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -134,7 +134,7 @@ import java.io.IOException;
             int y=worldY-6;
             g2.drawString(text,x,y);
             if(isImmortal==true) ToastInvalidMove(g2);
-            g2.drawImage(agvImage,worldX,worldY,gp.tileSize,gp.tileSize,null);
+            g2.drawImage(entityImage,worldX,worldY,gp.tileSize,gp.tileSize,null);
 
         }
     }

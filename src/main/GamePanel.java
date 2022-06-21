@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
-    public final int originalTileSize = 14; //16 * 16
+    public final int originalTileSize = 16; //16 * 16
     public final int scale =2;
     public final int tileSize = originalTileSize*scale;//32 *32
     public final int maxScreenCol=52;
@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Set player's default position
 
     public GamePanel(){
-        this.setPreferredSize(new Dimension(1920,1080));
+        this.setPreferredSize(new Dimension(52*tileSize,28*tileSize));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);

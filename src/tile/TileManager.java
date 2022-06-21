@@ -34,7 +34,7 @@ public class TileManager {
 
             while(col < gp.maxScreenCol && row < gp.maxScreenRow){
                 String line = br.readLine();
-                String number[] = line.split("  ");
+                String number[] = line.split(" ");
 
                 while(col < gp.maxScreenCol){
                     int num = Integer.parseInt(number[col]);
