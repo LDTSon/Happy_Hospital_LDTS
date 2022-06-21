@@ -23,14 +23,14 @@ import java.io.IOException;
         public Agv(GamePanel gp, KeyHandler keyH){
             this.gp=gp;
             this.keyH=keyH;
-            solidArea=new Rectangle(8,8,16,16);
+            solidArea = new Rectangle(8,8,16,16);
             solidAreaDefaultX=solidArea.x;
             solidAreaDefaultY=solidArea.y;
             setDefaultValues();
             getPlayerImage();
             screenX=gp.screenWidth/2 -gp.tileSize/2;
             screenY=gp.screenHeight/2-gp.tileSize/2;
-            arial_17=new Font("Arial",Font.TYPE1_FONT,10);
+            arial_17=new Font("Arial",Font.TYPE1_FONT,17);
             arial_30=new Font("Arial",Font.TYPE1_FONT,30);
         }
         public void setDefaultValues(){
@@ -61,7 +61,7 @@ import java.io.IOException;
         }
         public void checkDirection() {
             int midX = x + gp.tileSize/2 ;
-            int midY = y +6 +gp.tileSize/2 ;
+            int midY = y + gp.tileSize/2 ;
             System.out.println(x +" "+ y);
             midX = midX / gp.tileSize;
             midY = midY / gp.tileSize;
@@ -129,7 +129,7 @@ import java.io.IOException;
             g2.setFont(arial_17);
             g2.setColor(Color.green);
             String text="AGV";
-            int textLength=(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
+            int textLength = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
             int x= this.x +12-textLength/2;
             int y= this.y -6;
             g2.drawString(text,x,y);

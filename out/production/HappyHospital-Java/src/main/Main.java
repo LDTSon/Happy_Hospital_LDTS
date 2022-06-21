@@ -1,6 +1,6 @@
 package main;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.*;
 
 public class Main {
@@ -9,6 +9,7 @@ public class Main {
         window.getDefaultCloseOperation();
         window.setResizable(false);
         window.setTitle("Happy Hospital - Em ham mo anh Son");
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         GamePanel gamePanel=new GamePanel();
         window.add(gamePanel);
