@@ -14,30 +14,30 @@ import java.io.IOException;
         private int desX;
         private int desY;
         Font arial_17;
+        Font arial_30;
         GamePanel gp;
         KeyHandler keyH;
         public final int screenX;
         public final int screenY;
-        public int hasKey=0;
 
         public Agv(GamePanel gp, KeyHandler keyH){
             this.gp=gp;
             this.keyH=keyH;
-            solidArea=new Rectangle(8,16,32,32);
+            solidArea=new Rectangle(4,4,12,12);
             solidAreaDefaultX=solidArea.x;
             solidAreaDefaultY=solidArea.y;
             setDefaultValues();
             getPlayerImage();
             screenX=gp.screenWidth/2 -gp.tileSize/2;
             screenY=gp.screenHeight/2-gp.tileSize/2;
-            arial_17=new Font("Arial",Font.TYPE1_FONT,17);
-
+            arial_17=new Font("Arial",Font.TYPE1_FONT,10);
+            arial_30=new Font("Arial",Font.TYPE1_FONT,30);
         }
         public void setDefaultValues(){
-            worldX=21*gp.tileSize;
-            worldY=23*gp.tileSize;
-            speed=2;
-            direction="down";
+            worldX=2*gp.tileSize;
+            worldY=13*gp.tileSize;
+            speed=1;
+            direction="right";
         }
         public void getPlayerImage(){
             try{
@@ -46,15 +46,40 @@ import java.io.IOException;
                 e.printStackTrace();
             }
         }
+
         public void ToastInvalidMove(Graphics2D g2){
+            g2.setColor(Color.RED);
             String message="Di chuyển không hợp lệ!";
-            g2.setFont(arial_17);
-            g2.drawString(message,gp.tileSize*25,gp.tileSize*20);
+            g2.setFont(arial_30);
+            g2.drawString(message,gp.tileSize*20,gp.tileSize*10);
         }
         public void ToastOverLay(Graphics2D g2){
+            g2.setColor(Color.RED);
             String message="AGV va chạm với Agent!";
-            g2.setFont(arial_17);
-            g2.drawString(message,gp.tileSize*25,gp.tileSize*20);
+            g2.setFont(arial_30);
+            g2.drawString(message,gp.tileSize*20,gp.tileSize*14);
+        }
+        public void checkDirection() {
+            int midX = worldX+ gp.tileSize/2 ;
+            int midY = worldY+6 +gp.tileSize/2 ;
+            System.out.println(worldX +" "+ worldY);
+            midX = midX / gp.tileSize;
+            midY = midY / gp.tileSize;
+
+            int tileNum = gp.TileM.mapTileNum[midY][midX];
+            System.out.println(tileNum);
+            String d = gp.TileM.tile[tileNum].tileDirection;
+
+            if (d.equals("left")) {
+                if (direction.equals("right")) isImmortal = true;
+            } else if (d.equals("right")) {
+                if (direction.equals("left")) isImmortal = true;
+            } else if (d.equals("up")) {
+                if (direction.equals("down")) isImmortal = true;
+            } else if(d.equals("down")){
+                if (direction.equals("up")) isImmortal = true;
+            }
+            else;
         }
         public void update(){
             if(keyH.leftPressed==true || keyH.downPressed==true || keyH.upPressed==true || keyH.rightPressed==true){
@@ -72,25 +97,29 @@ import java.io.IOException;
                 }
                 //CHECK TILE COLLISION
                 collisionOn=false;
-               // gp.cChecker.CheckTile(this);
+                gp.cChecker.CheckTile(this);
+                //CHECK DIRECTION
+                isImmortal=false;
+                checkDirection();
                 //CHECK OBJECT COLLISION
                 //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
-                if(collisionOn==false){
-                    switch (direction){
+                if(collisionOn==false && isImmortal==false) {
+                    switch (direction) {
                         case "up":
-                            worldY-=speed;
+                            worldY -= speed;
                             break;
                         case "down":
-                            worldY+=speed;
+                            worldY += speed;
                             break;
                         case "left":
-                            worldX-=speed;
+                            worldX -= speed;
                             break;
                         case "right":
-                            worldX+=speed;
+                            worldX += speed;
                             break;
                     }
                 }
+
             }
         }
         public void draw(Graphics2D g2){
@@ -101,10 +130,11 @@ import java.io.IOException;
             g2.setColor(Color.green);
             String text="AGV";
             int textLength=(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
-            int x=worldX+16-textLength/2;
+            int x=worldX+12-textLength/2;
             int y=worldY-6;
             g2.drawString(text,x,y);
-            g2.drawImage(agvImage,worldX,worldY,32,32,null);
+            if(isImmortal==true) ToastInvalidMove(g2);
+            g2.drawImage(agvImage,worldX,worldY,gp.tileSize,gp.tileSize,null);
 
         }
     }

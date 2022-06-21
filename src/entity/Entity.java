@@ -1,6 +1,7 @@
 package entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.lang.String;
 public class Entity {
     public int worldX,worldY;
     public int speed;
