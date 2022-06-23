@@ -1,9 +1,11 @@
 package main;
 
+import entity.Agent;
 import entity.Agv;
 import tile.TileManager;
 import javax.swing.JPanel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
     public final int originalTileSize = 16; //16 * 16
@@ -18,13 +20,18 @@ public class GamePanel extends JPanel implements Runnable {
     //FPS
     int FPS = 60;
 
-    public TileManager TileM=new TileManager(this);
-    KeyHandler keyH=new KeyHandler();
-     public CollisionChecker cChecker=new CollisionChecker(this);
-    //public UI ui =new UI(this);
+    public TileManager TileM = new TileManager(this);
+    KeyHandler keyH = new KeyHandler(this);
+     public CollisionChecker cChecker = new CollisionChecker(this);
+    public UI ui = new UI(this);
     Thread gameThread;
 
-    public Agv player=new Agv(this,keyH);
+    public Agv player = new Agv(this, keyH);
+    public ArrayList<Agent> agents = new ArrayList<>();
+
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     //Set player's default position
 
@@ -34,6 +41,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+        this.gameState = playState;
+    }
+
+    public void setupGame() {
+
     }
 
     public void startGameThread(){
@@ -81,18 +93,27 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void update(){
 
-        player.update();
+        if(gameState == playState) {
+            player.update();
+        }
+        if(gameState == pauseState) {
+
+        }
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        Graphics2D g2=(Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g;
+
         //TILE
         TileM.draw(g2);
-        //PLAYER
+        //PLAYER AGV
         player.draw(g2);
+        //Agent
+        //agent.draw(g2);
         //UI
-       // ui.draw(g2);
+        ui.draw(g2);
+
         g2.dispose();
     }
 }

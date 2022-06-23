@@ -15,47 +15,44 @@ import java.io.IOException;
         private int desY;
         Font arial_17;
         Font arial_30;
-        GamePanel gp;
         KeyHandler keyH;
         public final int screenX;
         public final int screenY;
 
         public Agv(GamePanel gp, KeyHandler keyH){
-            this.gp=gp;
-            this.keyH=keyH;
+
+            super(gp);
+            this.keyH = keyH;
             solidArea = new Rectangle(8,8,16,16);
-            solidAreaDefaultX=solidArea.x;
-            solidAreaDefaultY=solidArea.y;
+            solidAreaDefaultX = solidArea.x;
+            solidAreaDefaultY = solidArea.y;
             setDefaultValues();
             getPlayerImage();
-            screenX=gp.screenWidth/2 -gp.tileSize/2;
-            screenY=gp.screenHeight/2-gp.tileSize/2;
-            arial_17=new Font("Arial",Font.TYPE1_FONT,17);
-            arial_30=new Font("Arial",Font.TYPE1_FONT,30);
+            screenX = gp.screenWidth/2 -gp.tileSize/2;
+            screenY = gp.screenHeight/2-gp.tileSize/2;
+            arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
+            arial_30 = new Font("Arial",Font.TYPE1_FONT,30);
         }
         public void setDefaultValues(){
-            x =2*gp.tileSize;
-            y =13*gp.tileSize;
-            speed=1;
-            direction="right";
+            x = 2*gp.tileSize;
+            y = 13*gp.tileSize;
+            speed = 1;
+            direction = "right";
         }
         public void getPlayerImage(){
-            try{
-                entityImage=ImageIO.read(getClass().getResourceAsStream("/res/agv.png"));
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+
+            entityImage = setup("agv");
         }
 
         public void ToastInvalidMove(Graphics2D g2){
             g2.setColor(Color.RED);
-            String message="Di chuyển không hợp lệ!";
+            String message = "Di chuyển không hợp lệ!";
             g2.setFont(arial_30);
             g2.drawString(message,gp.tileSize*20,gp.tileSize*10);
         }
         public void ToastOverLay(Graphics2D g2){
             g2.setColor(Color.RED);
-            String message="AGV va chạm với Agent!";
+            String message = "AGV va chạm với Agent!";
             g2.setFont(arial_30);
             g2.drawString(message,gp.tileSize*20,gp.tileSize*14);
         }
@@ -129,8 +126,8 @@ import java.io.IOException;
             g2.setColor(Color.green);
             String text="AGV";
             int textLength = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
-            int x= this.x +12-textLength/2;
-            int y= this.y -6;
+            int x = this.x + 12-textLength/2;
+            int y = this.y -6;
             g2.drawString(text,x,y);
             if(isImmortal) ToastInvalidMove(g2);
             g2.drawImage(entityImage, this.x, this.y,gp.tileSize,gp.tileSize,null);
