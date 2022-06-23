@@ -70,60 +70,59 @@ import java.io.IOException;
             System.out.println(tileNum);
             String d = gp.TileM.tile[tileNum].tileDirection;
 
-            if (d.equals("left")) {
-                if (direction.equals("right")) isImmortal = true;
-            } else if (d.equals("right")) {
-                if (direction.equals("left")) isImmortal = true;
-            } else if (d.equals("up")) {
-                if (direction.equals("down")) isImmortal = true;
-            } else if(d.equals("down")){
-                if (direction.equals("up")) isImmortal = true;
+            switch (d) {
+                case "left":
+                    if (direction.equals("right")) isImmortal = true;
+                    break;
+                case "right":
+                    if (direction.equals("left")) isImmortal = true;
+                    break;
+                case "up":
+                    if (direction.equals("down")) isImmortal = true;
+                    break;
+                case "down":
+                    if (direction.equals("up")) isImmortal = true;
+                    break;
             }
-            else;
         }
         public void update(){
-            if(keyH.leftPressed==true || keyH.downPressed==true || keyH.upPressed==true || keyH.rightPressed==true){
-                if(keyH.upPressed==true){
+            if(keyH.leftPressed || keyH.downPressed || keyH.upPressed || keyH.rightPressed){
+                if(keyH.upPressed){
                     direction="up";
                 }
-                else if(keyH.downPressed==true){
+                else if(keyH.downPressed){
                     direction="down";
                 }
-                else if(keyH.rightPressed==true){
+                else if(keyH.rightPressed){
                     direction="right";
                 }
-                else if(keyH.leftPressed==true){
+                else if(keyH.leftPressed){
                     direction="left";
                 }
+
                 //CHECK TILE COLLISION
-                collisionOn=false;
+                collisionOn = false;
                 gp.cChecker.CheckTile(this);
+
                 //CHECK DIRECTION
-                isImmortal=false;
+                isImmortal = false;
                 checkDirection();
+
                 //CHECK OBJECT COLLISION
                 //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
-                if(collisionOn==false && isImmortal==false) {
+                if(!collisionOn && !isImmortal) {
                     switch (direction) {
-                        case "up":
-                            y -= speed;
-                            break;
-                        case "down":
-                            y += speed;
-                            break;
-                        case "left":
-                            x -= speed;
-                            break;
-                        case "right":
-                            x += speed;
-                            break;
+                        case "up" -> y -= speed;
+                        case "down" -> y += speed;
+                        case "left" -> x -= speed;
+                        case "right" -> x += speed;
                     }
                 }
 
             }
         }
         public void draw(Graphics2D g2){
-/*            g2.setColor(Color.white);
+/*          g2.setColor(Color.white);
             g2.fillRect(x,y,gp.tileSize,gp.tileSize);*/
 
             g2.setFont(arial_17);
@@ -133,7 +132,7 @@ import java.io.IOException;
             int x= this.x +12-textLength/2;
             int y= this.y -6;
             g2.drawString(text,x,y);
-            if(isImmortal==true) ToastInvalidMove(g2);
+            if(isImmortal) ToastInvalidMove(g2);
             g2.drawImage(entityImage, this.x, this.y,gp.tileSize,gp.tileSize,null);
 
         }
