@@ -8,9 +8,6 @@ public class Entity {
     public BufferedImage entityImage;
     public String direction;
 
-    public int spriteCounter=0;
-    public int spriteNum=1;
-
     public Rectangle solidArea;
     public boolean collisionOn = false;
 
