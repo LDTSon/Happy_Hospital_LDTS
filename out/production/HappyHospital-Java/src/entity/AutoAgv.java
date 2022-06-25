@@ -1,4 +1,10 @@
 package entity;
 
-public class AutoAgv {
+import main.GamePanel;
+
+public class AutoAgv extends Entity{
+
+    public AutoAgv(GamePanel gp) {
+        super(gp);
+    }
 }
