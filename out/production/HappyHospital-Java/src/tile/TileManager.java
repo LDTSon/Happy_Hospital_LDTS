@@ -24,6 +24,8 @@ public class TileManager {
         tile[6].tileDirection="right";
         tile[8].tileDirection="up";
         tile[2].tileDirection="down";
+        tile[5].agentCollision = true;
+        tile[10].agentCollision = true;
     }
     public void loadMap(String filePath){
         try{
@@ -84,7 +86,7 @@ public class TileManager {
             tile[index] = new Tile();
             tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
             tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize, "tile");
-            tile[index].collison = collision;
+            tile[index].agvCollision = collision;
 
         } catch (IOException e) {
             e.printStackTrace();

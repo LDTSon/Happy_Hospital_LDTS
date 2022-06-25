@@ -17,10 +17,13 @@ public class Entity {
 
     public Rectangle solidArea;
     public boolean collisionOn = false;
+    public boolean justCollided = false;
 
     public int solidAreaDefaultX,solidAreaDefaultY;
+    public int actionLockCounter = 0;
 
     public Entity(GamePanel gp) {
+
         this.gp = gp;
     }
 
@@ -38,4 +41,7 @@ public class Entity {
 
         return image;
     }
+
+    public void setAction() {}
+    public void update() {}
 }
