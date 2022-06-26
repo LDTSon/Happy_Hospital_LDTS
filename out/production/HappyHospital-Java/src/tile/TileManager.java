@@ -14,18 +14,21 @@ public class TileManager {
     public Tile [] tile;
     public int[][] mapTileNum;
 
+    boolean drawPath = false;
+
     public TileManager(GamePanel gp){
         this.gp = gp;
         tile = new Tile[20];
         getTileImage();
         mapTileNum = new int[100][100];
-        loadMap("/res/map.txt");
         tile[4].tileDirection="left";
         tile[6].tileDirection="right";
         tile[8].tileDirection="up";
         tile[2].tileDirection="down";
         tile[5].agentCollision = true;
         tile[10].agentCollision = true;
+
+        loadMap("/res/map.txt");
     }
     public void loadMap(String filePath){
         try{
@@ -41,7 +44,7 @@ public class TileManager {
 
                 while(col < gp.maxScreenCol){
                     int num = Integer.parseInt(number[col]);
-                    mapTileNum[row][col] = num;
+                    mapTileNum[col][row] = num;
                     col++;
                 }
                 if(col == gp.maxScreenCol){
@@ -56,29 +59,29 @@ public class TileManager {
     }
     public void getTileImage(){
 
-        setup(0, "0", true);
-        setup(1, "1", false);
-        setup(2, "2", false);
-        setup(3, "3", false);
-        setup(4, "4", false);
-        setup(5, "5", true);
-        setup(6, "6", false);
-        setup(7, "7", false);
-        setup(8, "8", false);
-        setup(9, "9", false);
-        setup(10, "10", true);
-        setup(11, "11", false);
-        setup(12, "12", false);
-        setup(13, "13", false);
-        setup(14, "14", false);
-        setup(15, "15", false);
-        setup(16, "16", false);
-        setup(17, "17", false);
-        setup(18, "18", false);
+        setup(0, "0", true, false);
+        setup(1, "1", false, false);
+        setup(2, "2", false, false);
+        setup(3, "3", false, false);
+        setup(4, "4", false, false);
+        setup(5, "5", true, true);
+        setup(6, "6", false, false);
+        setup(7, "7", false, false);
+        setup(8, "8", false, false);
+        setup(9, "9", false, false);
+        setup(10, "10", true, true);
+        setup(11, "11", false, false);
+        setup(12, "12", false, false);
+        setup(13, "13", false, false);
+        setup(14, "14", false, false);
+        setup(15, "15", false,false);
+        setup(16, "16", false, false);
+        setup(17, "17", false, false);
+        setup(18, "18", false, false);
 
     }
 
-    public void setup(int index, String imageName, boolean collision) {
+    public void setup(int index, String imageName, boolean agvCollision, boolean agentCollision) {
 
         UtilityTool uTool = new UtilityTool();
 
@@ -86,7 +89,8 @@ public class TileManager {
             tile[index] = new Tile();
             tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
             tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize, "tile");
-            tile[index].agvCollision = collision;
+            tile[index].agvCollision = agvCollision;
+            tile[index].agentCollision = agentCollision;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,7 +103,7 @@ public class TileManager {
 
         while(worldCol < gp.maxScreenCol && worldRow < gp.maxScreenRow){
 
-            int tileNum = mapTileNum[worldRow][worldCol];
+            int tileNum = mapTileNum[worldCol][worldRow];
 
             int screenX = worldCol*gp.tileSize;
             int screenY = worldRow*gp.tileSize;
@@ -112,6 +116,18 @@ public class TileManager {
             if(worldCol == gp.maxScreenCol){
                 worldCol = 0;
                 worldRow ++;
+            }
+        }
+
+        if(drawPath == true) {
+            g2.setColor(new Color(255, 0, 0, 70));
+
+            for(int i = 0; i < gp.pFinder.pathList.size(); i++) {
+
+                int x = gp.pFinder.pathList.get(i).col * gp.tileSize;
+                int y = gp.pFinder.pathList.get(i).row * gp.tileSize;
+
+                g2.fillRect(x, y, gp.tileSize, gp.tileSize);
             }
         }
     }

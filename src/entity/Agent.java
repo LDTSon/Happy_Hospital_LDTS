@@ -12,21 +12,37 @@ public class Agent extends Entity{
     private Position startPos;
     private Position endPos;
     private int id;
+
+    Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
+    private Text endText = new Text();
     public boolean isOverlap = false;
 
 
-    public Agent(GamePanel gp) {
+    public Agent(GamePanel gp, int id) {
         super(gp);
+        this.id = id;
+        setDefaultValues();;
+        getAgentImage();
+    }
+
+    public void setDefaultValues() {
 
         x = 4*gp.tileSize;
         y = 13*gp.tileSize;
-        direction = "down";
-        speed = 1;
+        direction = "up";
+        speed = 2;
 
-        solidArea = new Rectangle(0, 0, 32, 32);
+        this.solidArea = new Rectangle(4, 4, 24, 24);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        getAgentImage();
+
+        entityText.text = String.valueOf(this.id);
+        entityText.textLength = entityText.getTextLength();
+        endText.text = String.valueOf(this.id);
+        entityText.x = this.x + 11;
+        entityText.y = this.y - 6;
+
+        onPath = true;
     }
 
     public void getAgentImage(){
@@ -36,27 +52,20 @@ public class Agent extends Entity{
 
     public void setAction() {
 
-        actionLockCounter++;
+        if(onPath == true) {
+            int goalCol = 50;
+            int goalRow = this.id * 2 + 5;
 
-        if(actionLockCounter == 120) {
+            searchPath(goalCol, goalRow);
+        }else eliminate(this);
+    }
 
+    public static void eliminate(Agent agent) {
+        gp.agent.remove(agent);
+        if(gp.agent.size() < gp.agentNum) {
             Random random = new Random();
-            int i = random.nextInt(100) +  1;   //pick up a number from 1 to 100
-
-            if(i <= 25) {
-                direction = "up";
-            }
-            if(i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if(i > 50 && i <= 75) {
-                direction = "left";
-            }
-            if(i > 75 && i <= 100) {
-                direction = "right";
-            }
-
-            actionLockCounter = 0;
+            int index = random.nextInt(10);
+            gp.agent.add(new Agent(gp, index));
         }
     }
 
@@ -96,12 +105,17 @@ public class Agent extends Entity{
                 case "left" -> x -= speed;
                 case "right" -> x += speed;
             }
+
+            //UPDATE TEXT
+            entityText.x = this.x + 11;
+            entityText.y = this.y - 6;
         }
     }
 
     public void draw(Graphics2D g2){
-
+        g2.setFont(arial_17);
+        g2.setColor(Color.red);
+        g2.drawString(entityText.text, entityText.x, entityText.y);
         g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);
-
     }
 }

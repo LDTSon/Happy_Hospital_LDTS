@@ -2,6 +2,7 @@ package main;
 
 import entity.Agent;
 import entity.Agv;
+import gameAlgo.algorithm.PathFinder;
 import tile.TileManager;
 import javax.swing.JPanel;
 import java.awt.*;
@@ -15,19 +16,21 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenRow = 28;
     public final int screenWidth = tileSize*maxScreenCol;//52*32
     public final int screenHeight = tileSize*maxScreenRow;//28*32
+    public final int agentNum = 10;
 
 
     //FPS
     int FPS = 60;
 
-    public TileManager TileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
      public CollisionChecker cChecker = new CollisionChecker(this);
     public UI ui = new UI(this);
+    public PathFinder pFinder = new PathFinder(this);
     Thread gameThread;
 
     public Agv player = new Agv(this, keyH);
-    public Agent[] agent = new Agent[10];
+    public ArrayList<Agent> agent = new ArrayList<Agent>();
 
     public int gameState;
     public final int playState = 1;
@@ -46,7 +49,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
-        for(int i = 0; i < 10; i++) agent[i] = new Agent(this);
+        for(int i = 0; i < agentNum; i++) {
+            agent.add(new Agent(this, i));
+        }
     }
 
     public void startGameThread() {
@@ -74,7 +79,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void update(){
 
         if(gameState == playState) {
-            for(int i = 0; i < 10; i++) agent[i].update();
+            for(int i = 0; i < agent.size(); i++)
+                if(agent.get(i) != null) agent.get(i).update();
             player.update();
         }
         if(gameState == pauseState) {
@@ -87,9 +93,10 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
 
         //TILE
-        TileM.draw(g2);
+        tileM.draw(g2);
         //AGENT
-        for(int i = 0; i < 10; i++) agent[i].draw(g2);
+        for(int i = 0; i < agent.size(); i++)
+            if(agent.get(i) != null) agent.get(i).draw(g2);
         //PLAYER AGV
         player.draw(g2);
         //UI

@@ -15,29 +15,30 @@ public class Agv extends Entity {
         Font arial_17;
         Font arial_30;
         KeyHandler keyH;
-        public final int screenX;
-        public final int screenY;
 
 
         public Agv(GamePanel gp, KeyHandler keyH){
-
             super(gp);
             this.keyH = keyH;
-            solidArea = new Rectangle(8,8,16,16);
-            solidAreaDefaultX = solidArea.x;
-            solidAreaDefaultY = solidArea.y;
             setDefaultValues();
             getPlayerImage();
-            screenX = gp.screenWidth/2 -gp.tileSize/2;
-            screenY = gp.screenHeight/2-gp.tileSize/2;
-            arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
-            arial_30 = new Font("Arial",Font.TYPE1_FONT,30);
         }
         public void setDefaultValues(){
             x = 2*gp.tileSize;
             y = 13*gp.tileSize;
-            speed = 1;
+            speed = 4;
             direction = "right";
+
+            entityText.text = "AGV";
+            entityText.textLength = entityText.getTextLength();
+            entityText.x = this.x + 12 - entityText.textLength/2;
+            entityText.y = this.y - 6;
+            arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
+            arial_30 = new Font("Arial",Font.TYPE1_FONT,30);
+
+            solidArea = new Rectangle(8,8,16,16);
+            solidAreaDefaultX = solidArea.x;
+            solidAreaDefaultY = solidArea.y;
         }
         public void getPlayerImage(){
 
@@ -65,9 +66,9 @@ public class Agv extends Entity {
             midX = midX / gp.tileSize;
             midY = midY / gp.tileSize;
 
-            int tileNum = gp.TileM.mapTileNum[midY][midX];
+            int tileNum = gp.tileM.mapTileNum[midX][midY];
             //System.out.println(tileNum);
-            String d = gp.TileM.tile[tileNum].tileDirection;
+            String d = gp.tileM.tile[tileNum].tileDirection;
 
             switch (d) {
                 case "left":
@@ -104,7 +105,7 @@ public class Agv extends Entity {
                     direction="left";
                 }
 
-//                //CHECK TILE COLLISION
+               //CHECK TILE COLLISION
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
 
@@ -125,6 +126,9 @@ public class Agv extends Entity {
                     }
                 }
 
+                //UPDATE TEXT
+                entityText.x = this.x + 12 - entityText.textLength/2;
+                entityText.y = this.y - 6;
             }
         }
 
@@ -156,11 +160,7 @@ public class Agv extends Entity {
             g2.fillRect(x,y,gp.tileSize,gp.tileSize);*/
             g2.setFont(arial_17);
             g2.setColor(Color.green);
-            String text="AGV";
-            int textLength = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
-            int x = this.x + 12 - textLength/2;
-            int y = this.y - 6;
-            g2.drawString(text, x, y);
+            g2.drawString(entityText.text, entityText.x, entityText.y);
             //System.out.println(this.isDisable);
             if(this.isDisable) toastOverLay(g2);
             if(!isValidDirection) toastInvalidMove(g2);
