@@ -105,13 +105,13 @@ public class Agv extends Entity {
                     direction="left";
                 }
 
-               //CHECK TILE COLLISION
-                collisionOn = false;
-                gp.cChecker.checkTile(this);
-
-                //CHECK DIRECTION
-                isValidDirection = true;
-                checkDirection();
+//               //CHECK TILE COLLISION
+//                collisionOn = false;
+//                gp.cChecker.checkTile(this);
+//
+//                //CHECK DIRECTION
+//                isValidDirection = true;
+//                checkDirection();
 
                 //CHECK OBJECT COLLISION
 
@@ -144,7 +144,7 @@ public class Agv extends Entity {
             }).start();
         }
         public void handleOverlap(){
-            System.out.println("va cham agent");
+            //System.out.println("va cham agent");
             if(!this.isImmortal){
                 this.isDisable = true;
                 setTimeout(()->{
