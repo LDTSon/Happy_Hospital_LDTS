@@ -53,8 +53,7 @@ public class Entity {
 
     public void setAction() {}
 
-    public void searchPath(int goalCol, int goalRow) {
-
+    public boolean searchPath(int goalCol, int goalRow) {
         int startCol = (x + solidArea.x + 4)/gp.tileSize;
         int startRow = (y + solidArea.y + 4)/gp.tileSize;
         gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
@@ -106,7 +105,8 @@ public class Entity {
             int nextRow = gp.pFinder.pathList.get(0).row;
 
             if(nextCol == goalCol && nextRow == goalRow) onPath = false;
-        }
+            return true;
+        } else return false;
     }
     public void update() {}
 }

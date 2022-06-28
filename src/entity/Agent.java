@@ -76,21 +76,21 @@ public class Agent extends Entity{
             int goalCol = endPos.x/gp.tileSize;
             int goalRow = endPos.y/gp.tileSize;
 
-            searchPath(goalCol, goalRow);
+            if(!searchPath(goalCol, goalRow)) eliminate(this);
             return;
-        } else eliminate(this);
-//        else {
-//            int midX = x + 16;
-//            int midY = y + 16;
-//            int midEndX = endPos.x + 16;
-//            int midEndY = endPos.y + 16;
-//
-//            if(midX <= midEndX - 16) direction = "right";
-//            else if(midX >= midEndX + 16) direction = "left";
-//            else if(midY <= midEndY - 16) direction = "down";
-//            else if(midY >= midEndY + 16) direction = "up";
-//            else eliminate(this);
-//        }
+        }
+        else {
+            int midX = x + 16;
+            int midY = y + 16;
+            int midEndX = endPos.x + 16;
+            int midEndY = endPos.y + 16;
+
+            if(midX <= midEndX - 1) direction = "right";
+            else if(midX >= midEndX + 1) direction = "left";
+            else if(midY <= midEndY - 1) direction = "down";
+            else if(midY >= midEndY + 1) direction = "up";
+            else eliminate(this);
+        }
     }
 
     public void eliminate(Agent agent) {
