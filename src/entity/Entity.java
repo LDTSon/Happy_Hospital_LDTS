@@ -27,7 +27,6 @@ public class Entity {
     public boolean onPath = true;
 
     public Entity(GamePanel gp) {
-
         this.gp = gp;
         if(this instanceof AutoAgv) {
             Entity._id++;

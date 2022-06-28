@@ -26,7 +26,7 @@ public class Agv extends Entity {
         public void setDefaultValues(){
             x = 2*gp.tileSize;
             y = 13*gp.tileSize;
-            speed = 4;
+            speed = 2;
             direction = "right";
 
             entityText.text = "AGV";

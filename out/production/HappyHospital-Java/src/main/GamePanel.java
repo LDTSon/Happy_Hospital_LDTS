@@ -2,7 +2,6 @@ package main;
 
 import entity.Agent;
 import entity.Agv;
-import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
 import tile.TileManager;
 import javax.swing.JPanel;
@@ -17,10 +16,11 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenRow = 28;
     public final int screenWidth = tileSize*maxScreenCol;//52*32
     public final int screenHeight = tileSize*maxScreenRow;//28*32
+    public final int agentNum = 10;
 
 
     //FPS
-    int FPS = 120;
+    int FPS = 60;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
@@ -31,7 +31,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Agv player = new Agv(this, keyH);
     public ArrayList<Agent> agent = new ArrayList<Agent>();
-    public ArrayList<Position> doorPos = new ArrayList<>();
 
     public int gameState;
     public final int playState = 1;
@@ -50,9 +49,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
-        Position.getDoorPosition(this);
-        for(int i = 0; i < Agent.agentNum; i++) {
-            Agent.bornRandomAgent(this);
+        for(int i = 0; i < agentNum; i++) {
+            agent.add(new Agent(this, i));
         }
     }
 
