@@ -145,7 +145,11 @@ public class Agent extends Entity{
     public void draw(Graphics2D g2){
         g2.setFont(arial_17);
         g2.setColor(Color.red);
+        //DRAW AGENT TEXT
         g2.drawString(entityText.text, entityText.x, entityText.y);
+        //DRAW DES TEXT
+        g2.drawString();
+        //DRAW AGENT
         g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);
     }
 }
