@@ -13,7 +13,7 @@ public class Agent extends Entity{
     private Position endPos;
     private int id;
 
-    public static int agentNum = 1000;
+    public static int agentNum = 10;
 
     Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
     private Text endText = new Text();
@@ -54,9 +54,13 @@ public class Agent extends Entity{
 
         entityText.text = String.valueOf(this.id);
         entityText.textLength = entityText.getTextLength();
-        endText.text = String.valueOf(this.id);
         entityText.x = this.x + 11;
         entityText.y = this.y - 6;
+
+        endText.text = String.valueOf(this.id);
+        endText.textLength = endText.getTextLength();
+        endText.x = endPos.x + 11;
+        endText.y = endPos.y + 16;
 
         onPath = true;
     }
@@ -148,7 +152,8 @@ public class Agent extends Entity{
         //DRAW AGENT TEXT
         g2.drawString(entityText.text, entityText.x, entityText.y);
         //DRAW DES TEXT
-        g2.drawString();
+        //System.out.println(endText.text);
+        g2.drawString(endText.text, endText.x, endText.y);
         //DRAW AGENT
         g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);
     }
