@@ -106,6 +106,8 @@ public class Entity {
             int nextRow = gp.pFinder.pathList.get(0).row;
 
             if(nextCol == goalCol && nextRow == goalRow) onPath = false;
+        } else {
+            System.out.println("ko timf dc");
         }
     }
     public void update() {}

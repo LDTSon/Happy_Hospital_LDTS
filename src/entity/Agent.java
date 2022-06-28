@@ -13,7 +13,7 @@ public class Agent extends Entity{
     private Position endPos;
     private int id;
 
-    public static int agentNum = 10;
+    public static int agentNum = 100;
 
     Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
     private Text endText = new Text();
