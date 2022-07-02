@@ -15,10 +15,12 @@ public class AutoAgv extends Entity{
      //   private int handlerStuck;
 
         public static int autoAgvNum = 10;
+        public static int CountForSplit=30;
 
         Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
         private Text endText = new Text();
        // public boolean isOverlap = false;
+        public static boolean checkEliminate=false;
 
 
     public AutoAgv(GamePanel gp, Position startPos, Position endPos, int id) {
@@ -30,14 +32,27 @@ public class AutoAgv extends Entity{
             getAutoAgvImage();
         }
 
+    public static void setTimeout(Runnable runnable, int delay){
+        new Thread(() -> {
+            try {
+                Thread.sleep(delay);
+                runnable.run();
+            }
+            catch (Exception e){
+                System.err.println(e);
+            }
+        }).start();
+    }
+
         public static void bornRandomAutoAgv(GamePanel gp) {
             Random random = new Random();
             int index = random.nextInt(autoAgvNum);
             Position startPoint=new Position(2*gp.tileSize,14*gp.tileSize);
-            int randomEnd = random.nextInt(gp.doorPos.size());
+            int randomEnd = random.nextInt(gp.DesPos.size());
 
-            gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.doorPos.get(randomEnd), index));
-        }
+            gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.DesPos.get(randomEnd), index));
+
+    }
 
         public void setDefaultValues() {
 
@@ -116,7 +131,6 @@ public class AutoAgv extends Entity{
         }*/
 
         public void update() {
-
             //if(this.isOverlap) return;
             setAction();
 
