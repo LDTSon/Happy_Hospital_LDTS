@@ -58,7 +58,7 @@ public class Entity {
         int startCol = (x + solidArea.x + 4)/gp.tileSize;
         int startRow = (y + solidArea.y + 4)/gp.tileSize;
         gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
-        if(gp.pFinder.search() == true) {
+        if(gp.pFinder.search(this) == true) {
             //Next x & y
             int nextX = gp.pFinder.pathList.get(0).col*gp.tileSize;
             int nextY = gp.pFinder.pathList.get(0).row*gp.tileSize;

@@ -2,6 +2,7 @@ package main;
 
 import entity.Agent;
 import entity.Agv;
+import entity.AutoAgv;
 import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
 import tilesMap.TileManager;
@@ -32,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Agv player = new Agv(this, keyH);
     public ArrayList<Agent> agent = new ArrayList<Agent>();
     public ArrayList<Position> doorPos = new ArrayList<>();
+    public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
 
     public int gameState;
     public final int playState = 1;
@@ -53,6 +55,9 @@ public class GamePanel extends JPanel implements Runnable {
         Position.getDoorPosition(this);
         for(int i = 0; i < Agent.agentNum; i++) {
             Agent.bornRandomAgent(this);
+        }
+        for(int i = 0; i < AutoAgv.autoAgvNum; i++) {
+            AutoAgv.bornRandomAutoAgv(this);
         }
     }
 
@@ -81,8 +86,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void update(){
 
         if(gameState == playState) {
+            for(int i = 0; i < autoAgvs.size(); i++)
+                if(autoAgvs.get(i) != null) autoAgvs.get(i).update();
+
             for(int i = 0; i < agent.size(); i++)
                 if(agent.get(i) != null) agent.get(i).update();
+
             player.update();
         }
         if(gameState == pauseState) {
@@ -96,6 +105,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         //TILE
         tileM.draw(g2);
+        //AUTOAGV
+        for(int i = 0; i < autoAgvs.size(); i++)
+            if(autoAgvs.get(i) != null) autoAgvs.get(i).draw(g2);
         //AGENT
         for(int i = 0; i < agent.size(); i++)
             if(agent.get(i) != null) agent.get(i).draw(g2);
