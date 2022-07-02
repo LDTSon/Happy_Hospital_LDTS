@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.util.ArrayList;
 
+
 public class GamePanel extends JPanel implements Runnable {
     public final int originalTileSize = 16; //16 * 16
     public final int scale = 2;
@@ -33,11 +34,14 @@ public class GamePanel extends JPanel implements Runnable {
     public Agv player = new Agv(this, keyH);
     public ArrayList<Agent> agent = new ArrayList<Agent>();
     public ArrayList<Position> doorPos = new ArrayList<>();
+    public ArrayList<Position> DesPos = new ArrayList<>();
     public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
 
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public static int CountAutoAgvInit=0;
+    public static int CountTime=0;
 
     //Set player's default position
 
@@ -51,14 +55,17 @@ public class GamePanel extends JPanel implements Runnable {
         setupGame();
     }
 
+
     public void setupGame() {
         Position.getDoorPosition(this);
+        Position.getDesPosition(this);
+
         for(int i = 0; i < Agent.agentNum; i++) {
             Agent.bornRandomAgent(this);
         }
-        for(int i = 0; i < AutoAgv.autoAgvNum; i++) {
+        /*for(int i = 0; i < AutoAgv.autoAgvNum; i++) {
             AutoAgv.bornRandomAutoAgv(this);
-        }
+        }*/
     }
 
     public void startGameThread() {
@@ -90,6 +97,13 @@ public class GamePanel extends JPanel implements Runnable {
                 Agent.bornRandomAgent(this);
                 sCount = 0;
             }
+            // LAM CHO AUTOAGV RA MOT CACH TUAN TU
+            CountTime++;
+            if(CountTime==60 && CountAutoAgvInit<AutoAgv.autoAgvNum)
+            {
+                AutoAgv.bornRandomAutoAgv(this);
+                CountTime=0;
+            }
             for(int i = 0; i < autoAgvs.size(); i++)
                 if(autoAgvs.get(i) != null) autoAgvs.get(i).update();
 
@@ -114,6 +128,7 @@ public class GamePanel extends JPanel implements Runnable {
         //TILE
         tileM.draw(g2);
         //AUTOAGV
+
         for(int i = 0; i < autoAgvs.size(); i++)
             if(autoAgvs.get(i) != null) autoAgvs.get(i).draw(g2);
         //AGENT
