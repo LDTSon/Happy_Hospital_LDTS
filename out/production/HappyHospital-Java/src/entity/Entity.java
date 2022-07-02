@@ -54,8 +54,8 @@ public class Entity {
     public void setAction() {}
 
     public boolean searchPath(int goalCol, int goalRow) {
-        int startCol = (x + solidArea.x + 4)/gp.tileSize;
-        int startRow = (y + solidArea.y + 4)/gp.tileSize;
+        int startCol = (x + solidArea.x)/gp.tileSize;
+        int startRow = (y + solidArea.y)/gp.tileSize;
         gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
         if(gp.pFinder.search(this) == true) {
             //Next x & y
@@ -99,14 +99,15 @@ public class Entity {
                 gp.cChecker.checkTile(this);
                 if(collisionOn == true) direction = "right";
             }
-            //System.out.println(enTopY + " " + enLeftX + " " + enBottomY + " " + enRightX + " " + nextY + " " + nextX);
-            //System.out.println(direction);
             int nextCol = gp.pFinder.pathList.get(0).col;
             int nextRow = gp.pFinder.pathList.get(0).row;
 
             if(nextCol == goalCol && nextRow == goalRow) onPath = false;
             return true;
-        } else return false;
+        } else {
+            System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
+            return false;
+        }
     }
     public void update() {}
 }

@@ -13,7 +13,7 @@ public class Agent extends Entity{
     private Position endPos;
     private int id;
 
-    public static int agentNum = 100;
+    public static int agentNum = 10;
 
     Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
     private Text endText = new Text();
@@ -29,23 +29,13 @@ public class Agent extends Entity{
         getAgentImage();
     }
 
-    public static void bornRandomAgent(GamePanel gp) {
-        Random random = new Random();
-        int index = random.nextInt(agentNum);
-        int randomStart = random.nextInt(gp.doorPos.size());
-        int randomEnd;
-        do {
-            randomEnd = random.nextInt(gp.doorPos.size());
-        } while(randomStart == randomEnd);
 
-        gp.agent.add(new Agent(gp, gp.doorPos.get(randomStart), gp.doorPos.get(randomEnd), index));
-    }
 
     public void setDefaultValues() {
 
         x = startPos.x;
         y = startPos.y;
-        direction = "up";
+        direction = new String();
         speed = 1;
 
         this.solidArea = new Rectangle(4, 4, 24, 24);
@@ -65,6 +55,24 @@ public class Agent extends Entity{
         onPath = true;
     }
 
+    public static void loadAgent(GamePanel gp) {
+        while(gp.agent.size() < agentNum) bornRandomAgent(gp);
+    }
+
+    public static void bornRandomAgent(GamePanel gp) {
+        if(gp.agent.size() < agentNum) {
+            Random random = new Random();
+            int index = random.nextInt(agentNum);
+            int randomStart = random.nextInt(gp.doorPos.size());
+            int randomEnd;
+            do {
+                randomEnd = random.nextInt(gp.doorPos.size());
+            } while(randomStart == randomEnd);
+
+            gp.agent.add(new Agent(gp, gp.doorPos.get(randomStart), gp.doorPos.get(randomEnd), index));
+        }
+    }
+
     public void getAgentImage(){
 
         entityImage = setup("agent");
@@ -76,8 +84,19 @@ public class Agent extends Entity{
             int goalCol = endPos.x/gp.tileSize;
             int goalRow = endPos.y/gp.tileSize;
 
-            if(!searchPath(goalCol, goalRow)) eliminate(this);
-            return;
+            boolean found = searchPath(goalCol, goalRow);
+            if(found) return;
+            else {
+//                Random random = new Random();
+//                int i = random.nextInt(4) + 1;
+//                switch (i) {
+//                    case 0 -> direction = "up";
+//                    case 1 -> direction = "left";
+//                    case 2 -> direction = "down";
+//                    case 3 -> direction = "right";
+//                }
+                //direction = "down";
+            }
         }
         else {
             int midX = x + 16;
@@ -95,11 +114,7 @@ public class Agent extends Entity{
 
     public void eliminate(Agent agent) {
         gp.agent.remove(agent);
-        if(gp.agent.size() < agentNum) {
-            Random random = new Random();
-            int index = random.nextInt(agentNum);
-            bornRandomAgent(gp);
-        }
+        bornRandomAgent(gp);
     }
 
     public static void setTimeout(Runnable runnable, int delay){

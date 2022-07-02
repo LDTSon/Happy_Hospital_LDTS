@@ -78,6 +78,8 @@ public class PathFinder {
         goalNode = node[goalCol][goalRow];
         openList.add(currentNode);
 
+        //System.out.println(startNode.col + " " + startNode.row + " " + goalNode.col + " " + goalNode.row);
+
         int row = 0;
         int col = 0;
         while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
@@ -117,7 +119,8 @@ public class PathFinder {
 
     public boolean search(Entity entity) {
 
-        while (!goalReached && step < 500) {
+        while (!goalReached && step < 771) {
+            //System.out.println(step);
             int row = currentNode.row;
             int col = currentNode.col;
 
@@ -125,97 +128,114 @@ public class PathFinder {
             currentNode.checked = true;
             openList.remove(currentNode);
 
-            // CHECK AUTOAGV
-
-            int tileNum = gp.tileM.mapTileNum[col][row];
-            String d = gp.tileM.tile[tileNum].tileDirection;
-
-            //Open the up node
-            if(row - 1 >= 0) {
-                //System.out.println("open up");
-                if(entity instanceof AutoAgv){
-                    if(d.equals("undirected")) {
-                        int tmpValue=gp.tileM.mapTileNum[col][row-1];
-                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
-                        if(tmpDirection.equals("up"))
-                        {
-                            openNode(node[col][row-1]);
-                            System.out.println("open up!!!");
-                        }
-                    }
-                    else if(d.equals("up")) {
-                        System.out.println("open up");
-                        openNode(node[col][row-1]);
-                    }
-                }
-                else
-                   openNode(node[col][row-1]);
+            if(entity instanceof Agent) {
+                //Open the left node
+                if(col - 1 >= 0) openNode(node[col-1][row]);
+                //Open the up node
+                if(row - 1 >= 0) openNode(node[col][row-1]);
+                //Open the right node
+                if(col + 1 < gp.maxScreenCol) openNode(node[col+1][row]);
+                //Open the down node
+                if(row + 1 < gp.maxScreenRow) openNode(node[col][row+1]);
             }
-            //Open the left node
-            if(col - 1 >= 0) {
-                //System.out.println("open left");
-                if(entity instanceof AutoAgv){
-                    if(d.equals("undirected")) {
-                        int tmpValue=gp.tileM.mapTileNum[col-1][row];
-                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
-                        if(tmpDirection.equals("left"))
-                        {
-                            System.out.println("open left!!!");
-                            openNode(node[col-1][row]);
-                        }
-                    }
-                    else if(d.equals("left")) {
-                        System.out.println("open left");
+
+            else if(entity instanceof AutoAgv) {
+                // CHECK AUTOAGV
+                int tileNum = gp.tileM.mapTileNum[col][row];
+                String d = gp.tileM.tile[tileNum].tileDirection;
+                switch (d) {
+                    case "undirected" -> {
                         openNode(node[col-1][row]);
-                    }
-                }
-                else
-                  openNode(node[col-1][row]);
-            }
-            //Open the down node
-            if(row+1 < gp.maxScreenRow) {
-                //System.out.println("open down");
-                if(entity instanceof AutoAgv){
-                    if(d.equals("undirected")) {
-                        int tmpValue=gp.tileM.mapTileNum[col][row+1];
-                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
-
-                        if(tmpDirection.equals("down"))
-                        {
-                            System.out.println("open down!!!");
-                            openNode(node[col][row+1]);
-                        }
-                    }
-                    else if(d.equals("down")) {
-                        System.out.println("open down");
+                        openNode(node[col][row-1]);
+                        openNode(node[col+1][row]);
                         openNode(node[col][row+1]);
                     }
+                    case "left" -> openNode(node[col-1][row]);
+                    case "up" -> openNode(node[col][row-1]);
+                    case "right" -> openNode(node[col+1][row]);
+                    case "down" -> openNode(node[col][row+1]);
                 }
-                else
-                  openNode(node[col][row+1]);
             }
-            //Open the right node
-            if(col+1 < gp.maxScreenCol) {
-                //System.out.println("open right");
-                if(entity instanceof AutoAgv){
-                    if(d.equals("undirected")) {
-                        int tmpValue=gp.tileM.mapTileNum[col+1][row];
-                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
+            //Open the up node
+//            if(row - 1 >= 0) {
+//                //System.out.println("open up");
+//                if(entity instanceof AutoAgv){
+//                    if(d.equals("undirected")) {
+//                        int tmpValue=gp.tileM.mapTileNum[col][row-1];
+//                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
+//                        if(tmpDirection.equals("up"))
+//                        {
+//                            openNode(node[col][row-1]);
+//                        }
+//                    }
+//                    else if(d.equals("up")) {
+//                        openNode(node[col][row-1]);
+//                    }
+//                }
+//                else
+//                   openNode(node[col][row-1]);
+//            }
+//            //Open the left node
+//            if(col - 1 >= 0) {
+//                if(entity instanceof AutoAgv){
+//                    if(d.equals("undirected")) {
+//                        int tmpValue = gp.tileM.mapTileNum[col-1][row];
+//                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
+//                        if(tmpDirection.equals("left"))
+//                        {
+//                            openNode(node[col-1][row]);
+//                        }
+//                    }
+//                    else if(d.equals("left")) {
+//                        openNode(node[col-1][row]);
+//                    }
+//                }
+//                else
+//                  openNode(node[col-1][row]);
+//            }
+//            //Open the down node
+//            if(row+1 < gp.maxScreenRow) {
+//                if(entity instanceof AutoAgv){
+//                    if(d.equals("undirected")) {
+//                        int tmpValue=gp.tileM.mapTileNum[col][row+1];
+//                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
+//
+//                        if(tmpDirection.equals("down"))
+//                        {
+//                            openNode(node[col][row+1]);
+//                        }
+//                    }
+//                    else if(d.equals("down")) {
+//                        openNode(node[col][row+1]);
+//                    }
+//                }
+//                else
+//                  openNode(node[col][row+1]);
+//            }
+//            //Open the right node
+//            if(col+1 < gp.maxScreenCol) {
+//                if(entity instanceof AutoAgv){
+//                    if(d.equals("undirected")) {
+//                        int tmpValue=gp.tileM.mapTileNum[col+1][row];
+//                        String tmpDirection = gp.tileM.tile[tmpValue].tileDirection;
+//                        if(tmpDirection.equals("right"))
+//                        {
+//                            openNode(node[col+1][row]);
+//                        }
+//                    }
+//                    else if(d.equals("right")) {
+//                        openNode(node[col+1][row]);
+//                    }
+//                }
+//                else
+//                  openNode(node[col+1][row]);
+//            }
 
-                        if(tmpDirection.equals("right"))
-                        {
-                            System.out.println("open right!!!");
-                            openNode(node[col+1][row]);
-                        }
-                    }
-                    else if(d.equals("right")) {
-                        System.out.println("open right");
-                        openNode(node[col+1][row]);
-                    }
-                }
-                else
-                  openNode(node[col+1][row]);
-            }
+
+
+
+
+//
 
             //Find the best node
             int bestNodeIndex = 0;
@@ -242,7 +262,7 @@ public class PathFinder {
 
             //After the loop, openList[bestNodeIndex] is the next step (= currentNode)
             currentNode = openList.get(bestNodeIndex);
-
+            //System.out.println(currentNode.col + " " + currentNode.row);
             if(currentNode == goalNode) {
                 goalReached = true;
                 trackThePath();
