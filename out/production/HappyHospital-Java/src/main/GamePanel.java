@@ -19,11 +19,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize*maxScreenCol;//52*32
     public final int screenHeight = tileSize*maxScreenRow;//28*32
 
-
+    static int sCount = 0;
     //FPS
     int FPS = 30;
-
-    int sCount = 0;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
@@ -86,7 +84,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update(){
-
         if(gameState == playState) {
             sCount++;
             if(sCount == 60) {
@@ -100,6 +97,11 @@ public class GamePanel extends JPanel implements Runnable {
                 if(agent.get(i) != null) agent.get(i).update();
 
             player.update();
+            sCount++;
+            if(sCount == 60) {
+                Agent.bornRandomAgent(this);
+                sCount = 0;
+            }
         }
         if(gameState == pauseState) {
         }
