@@ -4,7 +4,7 @@ import entity.Agent;
 import entity.Agv;
 import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
-import tile.TileManager;
+import tilesMap.TileManager;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.util.ArrayList;
