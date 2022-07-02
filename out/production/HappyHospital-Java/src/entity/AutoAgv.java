@@ -55,7 +55,7 @@ public class AutoAgv extends Entity{
             entityText.x = this.x + 11;
             entityText.y = this.y - 6;
 
-            endText.text = String.valueOf(this.id);
+            endText.text = "DES";
             endText.textLength = endText.getTextLength();
             endText.x = endPos.x + 11;
             endText.y = endPos.y + 16;
