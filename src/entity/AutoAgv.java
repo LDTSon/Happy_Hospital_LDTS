@@ -65,11 +65,6 @@ public class AutoAgv extends Entity{
             solidAreaDefaultX = solidArea.x;
             solidAreaDefaultY = solidArea.y;
 
-            entityText.text = String.valueOf(this.id);
-            entityText.textLength = entityText.getTextLength();
-            entityText.x = this.x + 11;
-            entityText.y = this.y - 6;
-
             endText.text = "DES";
             endText.textLength = endText.getTextLength();
             endText.x = endPos.x + 11;
@@ -154,10 +149,6 @@ public class AutoAgv extends Entity{
                     case "left" -> x -= speed;
                     case "right" -> x += speed;
                 }
-
-                //UPDATE TEXT
-                entityText.x = this.x + 11;
-                entityText.y = this.y - 6;
             }
 
         }
@@ -165,10 +156,7 @@ public class AutoAgv extends Entity{
         public void draw(Graphics2D g2){
             g2.setFont(arial_17);
             g2.setColor(Color.red);
-            //DRAW AUTOAGV TEXT
-            g2.drawString(entityText.text, entityText.x, entityText.y);
             //DRAW DES TEXT
-            //System.out.println(endText.text);
             g2.drawString(endText.text, endText.x, endText.y);
             //DRAW AUTOAGV
             g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);

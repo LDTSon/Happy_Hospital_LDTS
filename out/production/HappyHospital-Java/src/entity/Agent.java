@@ -29,23 +29,13 @@ public class Agent extends Entity{
         getAgentImage();
     }
 
-    public static void bornRandomAgent(GamePanel gp) {
-        Random random = new Random();
-        int index = random.nextInt(agentNum);
-        int randomStart = random.nextInt(gp.doorPos.size());
-        int randomEnd;
-        do {
-            randomEnd = random.nextInt(gp.doorPos.size());
-        } while(randomStart == randomEnd);
 
-        gp.agent.add(new Agent(gp, gp.doorPos.get(randomStart), gp.doorPos.get(randomEnd), index));
-    }
 
     public void setDefaultValues() {
 
         x = startPos.x;
         y = startPos.y;
-        direction = "up";
+        direction = new String();
         speed = 1;
 
         this.solidArea = new Rectangle(4, 4, 24, 24);
@@ -65,6 +55,24 @@ public class Agent extends Entity{
         onPath = true;
     }
 
+    public static void loadAgent(GamePanel gp) {
+        while(gp.agent.size() < agentNum) bornRandomAgent(gp);
+    }
+
+    public static void bornRandomAgent(GamePanel gp) {
+        if(gp.agent.size() < agentNum) {
+            Random random = new Random();
+            int index = random.nextInt(agentNum);
+            int randomStart = random.nextInt(gp.doorPos.size());
+            int randomEnd;
+            do {
+                randomEnd = random.nextInt(gp.doorPos.size());
+            } while(randomStart == randomEnd);
+
+            gp.agent.add(new Agent(gp, gp.doorPos.get(randomStart), gp.doorPos.get(randomEnd), index));
+        }
+    }
+
     public void getAgentImage(){
 
         entityImage = setup("agent");
@@ -76,30 +84,37 @@ public class Agent extends Entity{
             int goalCol = endPos.x/gp.tileSize;
             int goalRow = endPos.y/gp.tileSize;
 
-            searchPath(goalCol, goalRow);
-            return;
-        } else eliminate(this);
-//        else {
-//            int midX = x + 16;
-//            int midY = y + 16;
-//            int midEndX = endPos.x + 16;
-//            int midEndY = endPos.y + 16;
-//
-//            if(midX <= midEndX - 16) direction = "right";
-//            else if(midX >= midEndX + 16) direction = "left";
-//            else if(midY <= midEndY - 16) direction = "down";
-//            else if(midY >= midEndY + 16) direction = "up";
-//            else eliminate(this);
-//        }
+            boolean found = searchPath(goalCol, goalRow);
+            if(found) return;
+            else {
+//                Random random = new Random();
+//                int i = random.nextInt(4) + 1;
+//                switch (i) {
+//                    case 0 -> direction = "up";
+//                    case 1 -> direction = "left";
+//                    case 2 -> direction = "down";
+//                    case 3 -> direction = "right";
+//                }
+                //direction = "down";
+            }
+        }
+        else {
+            int midX = x + 16;
+            int midY = y + 16;
+            int midEndX = endPos.x + 16;
+            int midEndY = endPos.y + 16;
+
+            if(midX <= midEndX - 1) direction = "right";
+            else if(midX >= midEndX + 1) direction = "left";
+            else if(midY <= midEndY - 1) direction = "down";
+            else if(midY >= midEndY + 1) direction = "up";
+            else eliminate(this);
+        }
     }
 
     public void eliminate(Agent agent) {
         gp.agent.remove(agent);
-        if(gp.agent.size() < agentNum) {
-            Random random = new Random();
-            int index = random.nextInt(agentNum);
-            bornRandomAgent(gp);
-        }
+        bornRandomAgent(gp);
     }
 
     public static void setTimeout(Runnable runnable, int delay){

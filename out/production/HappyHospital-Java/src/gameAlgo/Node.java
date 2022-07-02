@@ -16,4 +16,12 @@ public class Node {
         this.row = row;
         this.col = col;
     }
+
+    public Position nodeToPosition() {
+        return new Position(32*this.col + 16, 32*this.row + 16);
+    }
+    public boolean equal(Node node) {
+        if(this.col == node.col && this.row == node.row) return true;
+        return false;
+    }
 }
