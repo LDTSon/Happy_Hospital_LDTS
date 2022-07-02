@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         Position.getDoorPosition(this);
         Position.getDesPosition(this);
+
         for(int i = 0; i < Agent.agentNum; i++) {
             Agent.bornRandomAgent(this);
         }

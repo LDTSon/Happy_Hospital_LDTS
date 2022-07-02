@@ -31,13 +31,14 @@ public class AutoAgv extends Entity{
         }
 
         public static void bornRandomAutoAgv(GamePanel gp) {
+
             Random random = new Random();
             int index = random.nextInt(autoAgvNum);
             Position startPoint=new Position(2*gp.tileSize,14*gp.tileSize);
             int randomEnd = random.nextInt(gp.DesPos.size());
 
             gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.DesPos.get(randomEnd), index));
-        }
+    }
 
         public void setDefaultValues() {
 
@@ -121,7 +122,6 @@ public class AutoAgv extends Entity{
         }*/
 
         public void update() {
-
             //if(this.isOverlap) return;
             setAction();
 
