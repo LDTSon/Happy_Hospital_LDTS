@@ -126,24 +126,24 @@ public class PathFinder {
             openList.remove(currentNode);
 
             //Open the up node
-            if(col - 1 >= 0) {
-                //System.out.println("open up");
-                openNode(node[col-1][row]);
-            }
-            //Open the left node
             if(row - 1 >= 0) {
-                //System.out.println("open left");
+                //System.out.println("open up");
                 openNode(node[col][row-1]);
             }
+            //Open the left node
+            if(col - 1 >= 0) {
+                //System.out.println("open left");
+                openNode(node[col-1][row]);
+            }
             //Open the down node
-            if(col + 1 < gp.maxScreenCol) {
+            if(row+1 < gp.maxScreenRow) {
                 //System.out.println("open down");
-                openNode(node[col+1][row]);
+                openNode(node[col][row+1]);
             }
             //Open the right node
-            if(row + 1 < gp.maxScreenRow) {
+            if(col+1 < gp.maxScreenCol) {
                 //System.out.println("open right");
-                openNode(node[col][row+1]);
+                openNode(node[col+1][row]);
             }
 
             //Find the best node
