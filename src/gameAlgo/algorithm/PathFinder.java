@@ -72,11 +72,13 @@ public class PathFinder {
 
         resetNodes();
 
-        //Set Start and Golad node
+        //Set Start and Goal node
         startNode = node[startCol][startRow];
         currentNode = startNode;
         goalNode = node[goalCol][goalRow];
         openList.add(currentNode);
+
+        //System.out.println(startNode.col + " " + startNode.row + " " + goalNode.col + " " + goalNode.row);
 
         int row = 0;
         int col = 0;
@@ -117,7 +119,8 @@ public class PathFinder {
 
     public boolean search() {
 
-        while (!goalReached && step < 500) {
+        while (!goalReached && step < 771) {
+            //System.out.println(step);
             int row = currentNode.row;
             int col = currentNode.col;
 
@@ -171,7 +174,7 @@ public class PathFinder {
 
             //After the loop, openList[bestNodeIndex] is the next step (= currentNode)
             currentNode = openList.get(bestNodeIndex);
-
+            //System.out.println(currentNode.col + " " + currentNode.row);
             if(currentNode == goalNode) {
                 goalReached = true;
                 trackThePath();

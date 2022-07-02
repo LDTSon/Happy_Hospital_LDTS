@@ -26,7 +26,7 @@ public class Agv extends Entity {
         public void setDefaultValues(){
             x = 2*gp.tileSize;
             y = 13*gp.tileSize;
-            speed = 4;
+            speed = 1;
             direction = "right";
 
             entityText.text = "AGV";
@@ -105,13 +105,13 @@ public class Agv extends Entity {
                     direction="left";
                 }
 
-//               //CHECK TILE COLLISION
-//                collisionOn = false;
-//                gp.cChecker.checkTile(this);
-//
-//                //CHECK DIRECTION
-//                isValidDirection = true;
-//                checkDirection();
+               //CHECK TILE COLLISION
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+
+                //CHECK DIRECTION
+                isValidDirection = true;
+                checkDirection();
 
                 //CHECK OBJECT COLLISION
 

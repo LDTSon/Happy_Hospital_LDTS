@@ -1,4 +1,5 @@
 package entity;
+import gameAlgo.Position;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -52,12 +53,16 @@ public class Entity {
         return image;
     }
 
+    public void moveTo(Position desPos) {
+
+    }
+
     public void setAction() {}
 
-    public void searchPath(int goalCol, int goalRow) {
+    public boolean searchPath(int goalCol, int goalRow) {
 
-        int startCol = (x + solidArea.x + 4)/gp.tileSize;
-        int startRow = (y + solidArea.y + 4)/gp.tileSize;
+        int startCol = (x + solidArea.x)/gp.tileSize;
+        int startRow = (y + solidArea.y)/gp.tileSize;
         gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
         if(gp.pFinder.search() == true) {
             //Next x & y
@@ -107,6 +112,10 @@ public class Entity {
             int nextRow = gp.pFinder.pathList.get(0).row;
 
             if(nextCol == goalCol && nextRow == goalRow) onPath = false;
+            return true;
+        } else {
+            System.out.println(x + " " + y + " " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
+            return false;
         }
     }
     public void update() {}
