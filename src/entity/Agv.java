@@ -105,13 +105,12 @@ public class Agv extends Entity {
                     direction="left";
                 }
 
-//               //CHECK TILE COLLISION
-//                collisionOn = false;
-//                gp.cChecker.checkTile(this);
-//
-//                //CHECK DIRECTION
-//                isValidDirection = true;
-//                checkDirection();
+              //CHECK TILE COLLISION
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                //CHECK DIRECTION
+                isValidDirection = true;
+                checkDirection();
 
                 //CHECK OBJECT COLLISION
 

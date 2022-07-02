@@ -13,7 +13,7 @@ public class Agent extends Entity{
     private Position endPos;
     private int id;
 
-    public static int agentNum = 100;
+    public static int agentNum = 10;
 
     Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
     private Text endText = new Text();
@@ -76,21 +76,21 @@ public class Agent extends Entity{
             int goalCol = endPos.x/gp.tileSize;
             int goalRow = endPos.y/gp.tileSize;
 
-            if(!searchPath(goalCol, goalRow)) eliminate(this);
+            searchPath(goalCol, goalRow);
             return;
-        }
-        else {
-            int midX = x + 16;
-            int midY = y + 16;
-            int midEndX = endPos.x + 16;
-            int midEndY = endPos.y + 16;
-
-            if(midX <= midEndX - 1) direction = "right";
-            else if(midX >= midEndX + 1) direction = "left";
-            else if(midY <= midEndY - 1) direction = "down";
-            else if(midY >= midEndY + 1) direction = "up";
-            else eliminate(this);
-        }
+        } else eliminate(this);
+//        else {
+//            int midX = x + 16;
+//            int midY = y + 16;
+//            int midEndX = endPos.x + 16;
+//            int midEndY = endPos.y + 16;
+//
+//            if(midX <= midEndX - 16) direction = "right";
+//            else if(midX >= midEndX + 16) direction = "left";
+//            else if(midY <= midEndY - 16) direction = "down";
+//            else if(midY >= midEndY + 16) direction = "up";
+//            else eliminate(this);
+//        }
     }
 
     public void eliminate(Agent agent) {

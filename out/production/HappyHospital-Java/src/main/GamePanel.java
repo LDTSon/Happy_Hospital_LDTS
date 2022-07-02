@@ -2,8 +2,10 @@ package main;
 
 import entity.Agent;
 import entity.Agv;
+import entity.AutoAgv;
+import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
-import tile.TileManager;
+import tilesMap.TileManager;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,11 +18,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenRow = 28;
     public final int screenWidth = tileSize*maxScreenCol;//52*32
     public final int screenHeight = tileSize*maxScreenRow;//28*32
-    public final int agentNum = 10;
 
 
     //FPS
-    int FPS = 60;
+    int FPS = 120;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
@@ -31,6 +32,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Agv player = new Agv(this, keyH);
     public ArrayList<Agent> agent = new ArrayList<Agent>();
+    public ArrayList<Position> doorPos = new ArrayList<>();
+    public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
 
     public int gameState;
     public final int playState = 1;
@@ -49,8 +52,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
-        for(int i = 0; i < agentNum; i++) {
-            agent.add(new Agent(this, i));
+        Position.getDoorPosition(this);
+        for(int i = 0; i < Agent.agentNum; i++) {
+            Agent.bornRandomAgent(this);
+        }
+        for(int i = 0; i < AutoAgv.autoAgvNum; i++) {
+            AutoAgv.bornRandomAutoAgv(this);
         }
     }
 
@@ -79,8 +86,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void update(){
 
         if(gameState == playState) {
+            for(int i = 0; i < autoAgvs.size(); i++)
+                if(autoAgvs.get(i) != null) autoAgvs.get(i).update();
+
             for(int i = 0; i < agent.size(); i++)
                 if(agent.get(i) != null) agent.get(i).update();
+
             player.update();
         }
         if(gameState == pauseState) {
@@ -94,6 +105,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         //TILE
         tileM.draw(g2);
+        //AUTOAGV
+        for(int i = 0; i < autoAgvs.size(); i++)
+            if(autoAgvs.get(i) != null) autoAgvs.get(i).draw(g2);
         //AGENT
         for(int i = 0; i < agent.size(); i++)
             if(agent.get(i) != null) agent.get(i).draw(g2);

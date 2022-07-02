@@ -1,4 +1,4 @@
-package tile;
+package tilesMap;
 
 import main.GamePanel;
 import main.UtilityTool;
@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 public class TileManager {
     GamePanel gp;
     public Tile [] tile;
@@ -18,7 +19,7 @@ public class TileManager {
 
     public TileManager(GamePanel gp){
         this.gp = gp;
-        tile = new Tile[21];
+        tile = new Tile[25];
         getTileImage();
         mapTileNum = new int[52][28];
         mapDoorTileNum = new int[52][28];
@@ -90,7 +91,7 @@ public class TileManager {
             tile[index] = new Tile();
             tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
             if(index != 19 && index != 20)
-                tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize, "tile");
+                tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize, "tilesMap");
             else
                 tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize, "door");
             tile[index].agvCollision = agvCollision;
