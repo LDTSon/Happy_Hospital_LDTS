@@ -35,6 +35,28 @@ public class Position {
         }
     }
 
+    public static void getDesPosition(GamePanel gp){
+        int col = 0;
+        int row = 0;
+
+        while(col < gp.maxScreenCol && row < gp.maxScreenRow){
+
+            int tileNum = gp.tileM.mapTileNum[col][row];
+            boolean check=gp.tileM.tile[tileNum].agvCollision;
+
+            int x = col*gp.tileSize;
+            int y = row*gp.tileSize;
+
+            if(check==false && col>=2) gp.DesPos.add(new Position(x, y));
+
+            col++;
+
+            if(col == gp.maxScreenCol){
+                col = 0;
+                row ++;
+            }
+        }
+    }
     static double between (Position x, Position y) {
         return Math.sqrt((x.x - y.x)*(x.x - y.x)  + (x.y - y.y)*(x.y - y.y));
     }

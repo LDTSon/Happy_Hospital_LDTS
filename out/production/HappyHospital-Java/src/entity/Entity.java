@@ -107,6 +107,7 @@ public class Entity {
 
             if(nextCol == goalCol && nextRow == goalRow) onPath = false;
         }
+        else System.out.println("KHONG TIM DUOC DUONG!!!!!!!"+goalCol+"  " +goalRow);
     }
     public void update() {}
 }

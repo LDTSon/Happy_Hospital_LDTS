@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Agv player = new Agv(this, keyH);
     public ArrayList<Agent> agent = new ArrayList<Agent>();
     public ArrayList<Position> doorPos = new ArrayList<>();
+    public ArrayList<Position> DesPos = new ArrayList<>();
     public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
 
     public int gameState;
@@ -53,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
         Position.getDoorPosition(this);
+        Position.getDesPosition(this);
         for(int i = 0; i < Agent.agentNum; i++) {
             Agent.bornRandomAgent(this);
         }
