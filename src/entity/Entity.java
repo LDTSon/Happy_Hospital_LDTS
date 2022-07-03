@@ -108,7 +108,6 @@ public class Entity {
             System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
             return false;
         }
-        else System.out.println("KHONG TIM DUOC DUONG!!!!!!!"+goalCol+"  " +goalRow);
     }
     public void update() {}
 }

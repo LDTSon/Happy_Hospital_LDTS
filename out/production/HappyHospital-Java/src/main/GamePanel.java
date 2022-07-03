@@ -31,17 +31,17 @@ public class GamePanel extends JPanel implements Runnable {
     public PathFinder pFinder = new PathFinder(this);
     Thread gameThread;
 
-    public Agv player = new Agv(this, keyH);
+    public Agv player;
     public ArrayList<Agent> agent = new ArrayList<Agent>();
     public ArrayList<Position> doorPos = new ArrayList<>();
-    public ArrayList<Position> DesPos = new ArrayList<>();
+    public ArrayList<Position> desPos = new ArrayList<>();
     public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
 
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
     public static int CountAutoAgvInit=0;
-    public static int CountTime=0;
+    public static int CountTime = 0;
 
     //Set player's default position
 
@@ -59,6 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         Position.getDoorPosition(this);
         Position.getDesPosition(this);
+        this.player = new Agv(this, keyH);
 
         for(int i = 0; i < Agent.agentNum; i++) {
             Agent.bornRandomAgent(this);
@@ -91,6 +92,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update(){
+
         if(gameState == playState) {
             sCount++;
             if(sCount == 60) {
@@ -111,11 +113,6 @@ public class GamePanel extends JPanel implements Runnable {
                 if(agent.get(i) != null) agent.get(i).update();
 
             player.update();
-            sCount++;
-            if(sCount == 60) {
-                Agent.bornRandomAgent(this);
-                sCount = 0;
-            }
         }
         if(gameState == pauseState) {
         }
