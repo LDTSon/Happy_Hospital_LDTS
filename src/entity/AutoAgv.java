@@ -12,6 +12,7 @@ public class AutoAgv extends Entity{
         private Position endPos;
         private int id;
         private int isOnGate=0;
+        private boolean isGettingDes=false;
 
      //   private int handlerStuck;
 
@@ -89,11 +90,13 @@ public class AutoAgv extends Entity{
                 return;
             }
             else if(onPath==false && isOnGate==0){
-
-                isOnGate++;
-                onPath=true;
-                endPos.x=50*gp.tileSize;
-                endPos.y=14*gp.tileSize;
+                isGettingDes=true;
+                setTimeout(()-> {
+                    isGettingDes=false;
+                    isOnGate++;
+                    onPath=true;
+                    endPos.x=50*gp.tileSize;
+                    endPos.y=14*gp.tileSize;}, 2000);
             }
             else {
                 eliminate(this);
@@ -141,6 +144,7 @@ public class AutoAgv extends Entity{
         }*/
 
         public void update() {
+            if(isGettingDes==true) return;
             //if(this.isOverlap) return;
             setAction();
 

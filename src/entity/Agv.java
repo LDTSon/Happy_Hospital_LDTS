@@ -158,6 +158,9 @@ public class Agv extends Entity {
                     }
                 }
 
+
+
+
                 //CHECK IF AGV TOUCH GOAL
                 if(goalPos.x - 6 <= x && x <= goalPos.x + 6 &&
                    goalPos.y -6 <= y && y <= goalPos.y + 6) {
