@@ -48,9 +48,9 @@ public class AutoAgv extends Entity{
             Random random = new Random();
             int index = random.nextInt(autoAgvNum);
             Position startPoint=new Position(2*gp.tileSize,14*gp.tileSize);
-            int randomEnd = random.nextInt(gp.DesPos.size());
+            int randomEnd = random.nextInt(gp.desPos.size());
 
-            gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.DesPos.get(randomEnd), index));
+            gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.desPos.get(randomEnd), index));
 
     }
 

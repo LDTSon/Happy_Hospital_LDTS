@@ -1,17 +1,19 @@
 package entity;
 
 
+import gameAlgo.Position;
 import main.GamePanel;
 import main.KeyHandler;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Agv extends Entity {
         public boolean isValidDirection = true;
         private boolean isImmortal = false; // biến cần cho xử lý overlap =))
         private boolean isDisable = false; // biến cần cho xử lý overlap =))
-        private int desX;
-        private int desY;
+        private Position goalPos;
+        private Text goalText = new Text();
         Font arial_17;
         Font arial_30;
         KeyHandler keyH;
@@ -26,19 +28,26 @@ public class Agv extends Entity {
         public void setDefaultValues(){
             x = 2*gp.tileSize;
             y = 13*gp.tileSize;
-            speed = 2;
+            speed = 1;
             direction = "right";
 
             entityText.text = "AGV";
             entityText.textLength = entityText.getTextLength();
             entityText.x = this.x + 12 - entityText.textLength/2;
             entityText.y = this.y - 6;
-            arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
-            arial_30 = new Font("Arial",Font.TYPE1_FONT,30);
+            arial_17 = new Font("Arial", Font.BOLD,17);
+            arial_30 = new Font("Arial", Font.BOLD,30);
 
             solidArea = new Rectangle(8,8,16,16);
             solidAreaDefaultX = solidArea.x;
             solidAreaDefaultY = solidArea.y;
+
+            Random random = new Random();
+            int randomGoal = random.nextInt(gp.desPos.size());
+            this.goalPos = gp.desPos.get(randomGoal);
+            goalText.text = "DES";
+            goalText.x = goalPos.x + 11;
+            goalText.y = goalPos.y + 16;
         }
         public void getPlayerImage(){
 
@@ -88,6 +97,7 @@ public class Agv extends Entity {
         public void update(){
 
             if(this.isDisable) return;
+
             //CHECK AGENT COLLISION
             if(justCollided) handleOverlap();
 
@@ -105,15 +115,12 @@ public class Agv extends Entity {
                     direction="left";
                 }
 
-              //CHECK TILE COLLISION
+                //CHECK TILE COLLISION
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
                 //CHECK DIRECTION
                 isValidDirection = true;
                 checkDirection();
-
-                //CHECK OBJECT COLLISION
-
 
                 //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
                 if(!collisionOn && isValidDirection) {
@@ -123,6 +130,15 @@ public class Agv extends Entity {
                         case "left" -> x -= speed;
                         case "right" -> x += speed;
                     }
+                }
+
+                //CHECK IF AGV TOUCH GOAL
+                if(goalPos.x - 3 <= x && x <= goalPos.x + 3 &&
+                   goalPos.y - 3 <= y && y <= goalPos.y + 3) {
+                    this.speed = 0;
+                    setTimeout(()->{
+                        this.speed = 1;
+                        this.goalText = null;}, 1000);
                 }
 
                 //UPDATE TEXT
@@ -143,7 +159,7 @@ public class Agv extends Entity {
             }).start();
         }
         public void handleOverlap(){
-            //System.out.println("va cham agent");
+
             if(!this.isImmortal){
                 this.isDisable = true;
                 setTimeout(()->{
@@ -155,12 +171,17 @@ public class Agv extends Entity {
         }
 
         public void draw(Graphics2D g2){
-/*          g2.setColor(Color.white);
-            g2.fillRect(x,y,gp.tileSize,gp.tileSize);*/
+
+            //AGV TEXT
             g2.setFont(arial_17);
-            g2.setColor(Color.green);
+            g2.setColor(new Color(0, 124, 0));
             g2.drawString(entityText.text, entityText.x, entityText.y);
-            //System.out.println(this.isDisable);
+            if(goalText != null) {
+                g2.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 17));
+                g2.drawString(goalText.text, goalText.x, goalText.y);
+            }
+
+            //AGV
             if(this.isDisable) toastOverLay(g2);
             if(!isValidDirection) toastInvalidMove(g2);
             g2.drawImage(entityImage, this.x, this.y,gp.tileSize,gp.tileSize,null);
