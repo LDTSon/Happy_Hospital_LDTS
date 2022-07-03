@@ -13,7 +13,7 @@ public class Entity {
     public int x, y;
     public int speed;
     public static int  _id = 0;
-    private final int agvID;
+    public final int agvID;
     public BufferedImage entityImage;
     public String direction;
 
@@ -26,6 +26,7 @@ public class Entity {
     public Text entityText = new Text();
     public boolean onPath = true;
     public boolean onGate=true;
+    public boolean checkAutoAgvMove=false;
 
     public Entity(GamePanel gp) {
         this.gp = gp;

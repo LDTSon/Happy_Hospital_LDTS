@@ -13,6 +13,7 @@ public class AutoAgv extends Entity{
         private int id;
         private int isOnGate=0;
         private boolean isGettingDes=false;
+        public static int HandlerDeadLock=120;
 
      //   private int handlerStuck;
 
@@ -144,16 +145,24 @@ public class AutoAgv extends Entity{
         }*/
 
         public void update() {
+
             if(isGettingDes==true) return;
             //if(this.isOverlap) return;
+            // HANDLER AUTOAGV COLLISION
+            gp.cChecker.checkAutoAgv(this);
+            if(checkAutoAgvMove==true ){
+                setTimeout(()-> {
+                    checkAutoAgvMove=false;
+                }, 1);
+            }
+            if(checkAutoAgvMove==true) return;
+
             setAction();
 
             collisionOn = false;
-            gp.cChecker.checkTile(this);
+           // gp.cChecker.checkTile(this);
            // gp.cChecker.checkPlayer(this);
            // if(justCollided) handleOverlap();
-
-
 
             //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
             if(!collisionOn) {

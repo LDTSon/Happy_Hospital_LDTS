@@ -162,8 +162,8 @@ public class Agv extends Entity {
 
 
                 //CHECK IF AGV TOUCH GOAL
-                if(goalPos.x - 6 <= x && x <= goalPos.x + 6 &&
-                   goalPos.y -6 <= y && y <= goalPos.y + 6) {
+                if(goalText.x -11 <= x && x <= goalText.x + 21 &&
+                   goalText.y -16 <= y && y <= goalText.y + 16) {
                     /*this.speed = 0;
                     setTimeout(()->{
                         this.speed = 1;
