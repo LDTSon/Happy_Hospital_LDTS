@@ -59,6 +59,7 @@ public class UI {
 
         g2.setColor(Color.RED);
         g2.setFont(arial_80B);
+        g2.setStroke(new BasicStroke(5));
         g2.drawString("PAUSED", getXForCenteredText("PAUSED"), gp.tileSize*8);
 
         g2.setColor(Color.white);
