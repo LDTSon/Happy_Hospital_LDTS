@@ -2,30 +2,26 @@ package main;
 
 import entity.Agent;
 
+import javax.swing.*;
 import java.awt.*;
-import java.text.DecimalFormat;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
 
 public class UI {
     GamePanel gp;
     Graphics2D g2;
-    Font arial_28,arial_80B;
-    public boolean messageOn = false;
-    public String message = "";
-    int messageCounter = 0;
-    public boolean gameFinish = false;
+    Font arial_28B,arial_80B;
     public int commandNum = 0;
-    double playTime;
-    DecimalFormat dFormat = new DecimalFormat("#0.00");
+//    double playTime;
+//    DecimalFormat dFormat = new DecimalFormat("#0.00");
     public UI(GamePanel  gp){
         this.gp = gp;
-        arial_80B = new Font("Arial",Font.BOLD,80);
-        arial_28 = new Font("Arial",Font.PLAIN,28);
-    }
-    public void showMessage(String text){
-        message = text;
-        messageOn = true;
 
+        arial_80B = new Font("Arial",Font.BOLD,80);
+        arial_28B = new Font("Arial",Font.BOLD,28);
     }
+
     public void draw(Graphics2D g2){
 
         this.g2 = g2;
@@ -42,11 +38,6 @@ public class UI {
     }
 
     private void drawPauseScreen() {
-//        String text = "Tạm dừng";
-//        int x = getXForCenteredText(text);
-//        int y = gp.screenHeight/2;
-//
-//        g2.drawString(text, x, y);
 
         //CREATE A FRAME
         final int frameX = gp.tileSize*18;
@@ -62,7 +53,7 @@ public class UI {
         g2.drawString("PAUSED", getXForCenteredText("PAUSED"), gp.tileSize*8);
 
         g2.setColor(Color.white);
-        g2.setFont(arial_28);
+        g2.setFont(arial_28B);
         int x = frameX + 50;
         int y = frameY + gp.tileSize*5;
         final int lineHeight = 40;
@@ -73,6 +64,8 @@ public class UI {
         g2.drawString("Number of agents: " + agentNum, x, y);
         y += lineHeight;
 
+
+
         g2.drawString("Increase number of agents by 1", x, y);
         if(commandNum == 0) g2.drawString(">", x - gp.tileSize, y);
         y += lineHeight;
@@ -81,8 +74,12 @@ public class UI {
         if(commandNum == 1) g2.drawString(">", x - gp.tileSize, y);
         y += lineHeight;
 
-        g2.drawString("Quit game ", x, y);
+        g2.drawString("Game instruction", x, y);
         if(commandNum == 2) g2.drawString(">", x - gp.tileSize, y);
+        y += lineHeight;
+
+        g2.drawString("Quit game ", x, y);
+        if(commandNum == 3) g2.drawString(">", x - gp.tileSize, y);
         y += lineHeight;
 
         //VALUES
@@ -107,5 +104,18 @@ public class UI {
 
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return gp.screenWidth/2 - length/2;
+    }
+
+    public static boolean openWebpage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }

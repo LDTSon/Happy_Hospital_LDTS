@@ -4,6 +4,7 @@ import entity.Agent;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URI;
 
 public class KeyHandler implements KeyListener {
 
@@ -54,7 +55,7 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_S){
             gp.ui.commandNum++;
-            if(gp.ui.commandNum > 2) gp.ui.commandNum = 0;
+            if(gp.ui.commandNum > 3) gp.ui.commandNum = 0;
         }
         if(code == KeyEvent.VK_ENTER){
             switch (gp.ui.commandNum) {
@@ -62,7 +63,8 @@ public class KeyHandler implements KeyListener {
                 case 1 -> {
                     if(Agent.agentNum > 0) Agent.agentNum--;
                 }
-                case 2 -> System.exit(0);
+                case 2 -> gp.ui.openWebpage(URI.create("https://github.com/phamtuanhien/Project20211_HappyHospital"));
+                case 3 -> System.exit(0);
             }
         }
         if(code == KeyEvent.VK_P) {

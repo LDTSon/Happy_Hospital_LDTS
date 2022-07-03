@@ -6,7 +6,8 @@ import entity.AutoAgv;
 import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
 import tilesMap.TileManager;
-import javax.swing.JPanel;
+
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -53,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.gameState = playState;
         setupGame();
+
     }
 
 
