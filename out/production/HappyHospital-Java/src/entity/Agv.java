@@ -174,7 +174,7 @@ public class Agv extends Entity {
 
             //AGV TEXT
             g2.setFont(arial_17);
-            g2.setColor(new Color(0, 124, 0));
+            g2.setColor(Color.green);
             g2.drawString(entityText.text, entityText.x, entityText.y);
             if(goalText != null) {
                 g2.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 17));
