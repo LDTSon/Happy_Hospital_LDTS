@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     static int sCount = 0;
     //FPS
-    int FPS = 30;
+    int FPS = 60;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
@@ -91,6 +91,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void update(){
+
         if(gameState == playState) {
             sCount++;
             if(sCount == 60) {
@@ -111,11 +112,6 @@ public class GamePanel extends JPanel implements Runnable {
                 if(agent.get(i) != null) agent.get(i).update();
 
             player.update();
-            sCount++;
-            if(sCount == 60) {
-                Agent.bornRandomAgent(this);
-                sCount = 0;
-            }
         }
         if(gameState == pauseState) {
         }

@@ -25,6 +25,7 @@ public class Entity {
     public int actionLockCounter = 0;
     public Text entityText = new Text();
     public boolean onPath = true;
+    public boolean onGate=true;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -108,7 +109,7 @@ public class Entity {
             System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
             return false;
         }
-        else System.out.println("KHONG TIM DUOC DUONG!!!!!!!"+goalCol+"  " +goalRow);
+       // else System.out.println("KHONG TIM DUOC DUONG!!!!!!!"+goalCol+"  " +goalRow);
     }
     public void update() {}
 }

@@ -11,16 +11,15 @@ public class AutoAgv extends Entity{
         private Position startPos;
         private Position endPos;
         private int id;
+        private int isOnGate=0;
 
      //   private int handlerStuck;
 
         public static int autoAgvNum = 10;
-        public static int CountForSplit=30;
 
         Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
         private Text endText = new Text();
        // public boolean isOverlap = false;
-        public static boolean checkEliminate=false;
 
 
     public AutoAgv(GamePanel gp, Position startPos, Position endPos, int id) {
@@ -81,13 +80,24 @@ public class AutoAgv extends Entity{
 
         public void setAction() {
 
-            if(onPath == true) {
+            if(onPath == true && (isOnGate==0||isOnGate==1)) {
                 int goalCol = endPos.x/gp.tileSize;
                 int goalRow = endPos.y/gp.tileSize;
 
                 searchPath(goalCol, goalRow);
+
                 return;
-            } else eliminate(this);
+            }
+            else if(onPath==false && isOnGate==0){
+
+                isOnGate++;
+                onPath=true;
+                endPos.x=50*gp.tileSize;
+                endPos.y=14*gp.tileSize;
+            }
+            else {
+                eliminate(this);
+            }
 //        else {
 //            int midX = x + 16;
 //            int midY = y + 16;
@@ -157,7 +167,8 @@ public class AutoAgv extends Entity{
             g2.setFont(arial_17);
             g2.setColor(Color.red);
             //DRAW DES TEXT
-            g2.drawString(endText.text, endText.x, endText.y);
+            if(isOnGate==0)
+                g2.drawString(endText.text, endText.x, endText.y);
             //DRAW AUTOAGV
             g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);
         }

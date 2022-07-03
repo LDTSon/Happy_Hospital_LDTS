@@ -6,6 +6,7 @@ import main.GamePanel;
 import main.KeyHandler;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Agv extends Entity {
@@ -17,6 +18,7 @@ public class Agv extends Entity {
         Font arial_17;
         Font arial_30;
         KeyHandler keyH;
+        private static ArrayList<Position> DesPos=new ArrayList<Position>();
 
 
         public Agv(GamePanel gp, KeyHandler keyH){
@@ -25,6 +27,29 @@ public class Agv extends Entity {
             setDefaultValues();
             getPlayerImage();
         }
+
+    public static void getDesPosition(GamePanel gp){
+        int col = 0;
+        int row = 0;
+
+        while(col < gp.maxScreenCol && row < gp.maxScreenRow){
+
+            int tileNum = gp.tileM.mapTileNum[col][row];
+            boolean check=gp.tileM.tile[tileNum].agvCollision;
+
+            int x = col*gp.tileSize;
+            int y = row*gp.tileSize;
+
+            if(check==false && col>=5 && col<=45) DesPos.add(new Position(x, y));
+
+            col++;
+
+            if(col == gp.maxScreenCol){
+                col = 0;
+                row ++;
+            }
+        }
+    }
         public void setDefaultValues(){
             x = 2*gp.tileSize;
             y = 13*gp.tileSize;
@@ -42,9 +67,10 @@ public class Agv extends Entity {
             solidAreaDefaultX = solidArea.x;
             solidAreaDefaultY = solidArea.y;
 
+            getDesPosition(gp);
             Random random = new Random();
-            int randomGoal = random.nextInt(gp.desPos.size());
-            this.goalPos = gp.desPos.get(randomGoal);
+            int randomGoal = random.nextInt(DesPos.size());
+            this.goalPos = DesPos.get(randomGoal);
             goalText.text = "DES";
             goalText.x = goalPos.x + 11;
             goalText.y = goalPos.y + 16;
@@ -133,12 +159,21 @@ public class Agv extends Entity {
                 }
 
                 //CHECK IF AGV TOUCH GOAL
-                if(goalPos.x - 3 <= x && x <= goalPos.x + 3 &&
-                   goalPos.y - 3 <= y && y <= goalPos.y + 3) {
-                    this.speed = 0;
+                if(goalPos.x - 6 <= x && x <= goalPos.x + 6 &&
+                   goalPos.y -6 <= y && y <= goalPos.y + 6) {
+                    /*this.speed = 0;
                     setTimeout(()->{
                         this.speed = 1;
-                        this.goalText = null;}, 1000);
+                        this.goalText = null;}, 1000);*/
+
+                    Random random = new Random();
+
+                    int randomGoal = random.nextInt(DesPos.size());
+                    this.goalPos = DesPos.get(randomGoal);
+
+                    goalText.x = goalPos.x + 11;
+                    goalText.y = goalPos.y + 16;
+
                 }
 
                 //UPDATE TEXT
