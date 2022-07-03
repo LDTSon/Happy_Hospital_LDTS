@@ -11,8 +11,10 @@ public class Main {
         window.setTitle("Happy Hospital - Em ham mo anh Son");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        GamePanel gamePanel=new GamePanel();
+        GamePanel gamePanel = new GamePanel();
+
         window.add(gamePanel);
+
         window.pack();
 
 
