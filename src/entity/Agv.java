@@ -11,8 +11,8 @@ import java.util.Random;
 
 public class Agv extends Entity {
         public boolean isValidDirection = true;
-        private boolean isImmortal = false; // biến cần cho xử lý overlap =))
-        private boolean isDisable = false; // biến cần cho xử lý overlap =))
+        private boolean isImmortal = false; // biến cần cho xử lý overlap
+        private boolean isDisable = false; // biến cần cho xử lý overlap
         private Position goalPos;
         private Text goalText = new Text();
         Font arial_17;

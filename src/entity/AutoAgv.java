@@ -10,10 +10,11 @@ public class AutoAgv extends Entity{
 
         private Position startPos;
         private Position endPos;
-        private int id;
+        public static int id=0;
         private int isOnGate=0;
         private boolean isGettingDes=false;
         public static int HandlerDeadLock=120;
+        private boolean haveChangeX=false;
 
      //   private int handlerStuck;
 
@@ -47,7 +48,7 @@ public class AutoAgv extends Entity{
 
         public static void bornRandomAutoAgv(GamePanel gp) {
             Random random = new Random();
-            int index = random.nextInt(autoAgvNum);
+            int index = id++;
             Position startPoint=new Position(2*gp.tileSize,14*gp.tileSize);
             int randomEnd = random.nextInt(gp.DesPos.size());
 
@@ -68,7 +69,7 @@ public class AutoAgv extends Entity{
 
             endText.text = "DES";
             endText.textLength = endText.getTextLength();
-            endText.x = endPos.x + 11;
+            endText.x = endPos.x+6;
             endText.y = endPos.y + 16;
 
             onPath = true;
@@ -91,13 +92,61 @@ public class AutoAgv extends Entity{
                 return;
             }
             else if(onPath==false && isOnGate==0){
-                isGettingDes=true;
+               /* isGettingDes=true;
                 setTimeout(()-> {
                     isGettingDes=false;
                     isOnGate++;
                     onPath=true;
                     endPos.x=50*gp.tileSize;
-                    endPos.y=14*gp.tileSize;}, 2000);
+                    endPos.y=14*gp.tileSize;}, 2000);*/
+                int midX = x + 16;
+                int midY = y + 16;
+                int midEndX = endPos.x + 16;
+                int midEndY = endPos.y + 16;
+
+                boolean flag=false;
+
+                if(midX <= midEndX - 2) {
+                    direction = "right";flag=true;
+                }
+                else if(midX >= midEndX + 2) {
+                    direction = "left";flag=true;
+                }
+
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+                haveChangeX=false;
+                if(!collisionOn) {
+                    switch (direction) {
+                        case "up" -> y -= speed;
+                        case "down" -> y += speed;
+                        case "left" -> {
+                            x -= speed;haveChangeX=true;
+                        }
+                        case "right" -> {
+                            x += speed;
+                            haveChangeX=true;
+                        }
+                    }
+                }
+
+                if(midY <= midEndY - 2) {
+                    direction = "down";flag=true;
+                }
+                else if(midY >= midEndY + 2) {
+                    direction = "up";flag=true;
+                }
+
+                if(flag==false) {
+                    isGettingDes=true;
+                    haveChangeX=false;
+                    setTimeout(()-> {
+                        isGettingDes=false;
+                        isOnGate++;
+                        onPath=true;
+                        endPos.x=50*gp.tileSize;
+                        endPos.y=14*gp.tileSize;}, 2000);
+                }
             }
             else {
                 eliminate(this);
@@ -160,7 +209,7 @@ public class AutoAgv extends Entity{
             setAction();
 
             collisionOn = false;
-           // gp.cChecker.checkTile(this);
+            gp.cChecker.checkTile(this);
            // gp.cChecker.checkPlayer(this);
            // if(justCollided) handleOverlap();
 
@@ -169,8 +218,14 @@ public class AutoAgv extends Entity{
                 switch (direction) {
                     case "up" -> y -= speed;
                     case "down" -> y += speed;
-                    case "left" -> x -= speed;
-                    case "right" -> x += speed;
+                    case "left" -> {
+                        if(haveChangeX==false)
+                          x -= speed;
+                    }
+                    case "right" -> {
+                        if(haveChangeX==false)
+                           x += speed;
+                    }
                 }
             }
 

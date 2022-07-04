@@ -62,7 +62,19 @@ public class Agent extends Entity{
     public static void bornRandomAgent(GamePanel gp) {
         if(gp.agent.size() < agentNum) {
             Random random = new Random();
-            int index = random.nextInt(agentNum);
+            int index;
+            while(true)
+            {
+                index = random.nextInt(99);
+                boolean flag=false;
+                for(int i=0;i<gp.agent.size();i++){
+                    if(gp.agent.get(i)!=null) if(index==gp.agent.get(i).id) {
+                        flag=true;
+                        break;
+                    }
+                }
+                if(flag==false) break;
+            }
             int randomStart = random.nextInt(gp.doorPos.size());
             int randomEnd;
             do {
