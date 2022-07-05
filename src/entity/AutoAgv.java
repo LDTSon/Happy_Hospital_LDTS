@@ -2,7 +2,9 @@ package entity;
 
 import gameAlgo.Position;
 import main.GamePanel;
+import main.Main;
 
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.util.Random;
 
@@ -10,28 +12,25 @@ public class AutoAgv extends Entity{
 
         private Position startPos;
         private Position endPos;
-        public static int id=0;
         private int isOnGate=0;
         private boolean isGettingDes=false;
-        public static int HandlerDeadLock=120;
         private boolean haveChangeX=false;
-
-     //   private int handlerStuck;
-
+        public int countTimeDeadLock=0;
+        public boolean isFree=false;
         public static int autoAgvNum = 10;
+        public static boolean lock=false;
 
         Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
         private Text endText = new Text();
-       // public boolean isOverlap = false;
 
 
-    public AutoAgv(GamePanel gp, Position startPos, Position endPos, int id) {
+    public AutoAgv(GamePanel gp, Position startPos, Position endPos) {
             super(gp);
             this.startPos = startPos;
             this.endPos = endPos;
-            this.id = id;
             setDefaultValues();;
             getAutoAgvImage();
+            deadLine=calculateDes();
         }
 
     public static void setTimeout(Runnable runnable, int delay){
@@ -48,12 +47,9 @@ public class AutoAgv extends Entity{
 
         public static void bornRandomAutoAgv(GamePanel gp) {
             Random random = new Random();
-            int index = id++;
             Position startPoint=new Position(2*gp.tileSize,14*gp.tileSize);
             int randomEnd = random.nextInt(gp.DesPos.size());
-
-            gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.DesPos.get(randomEnd), index));
-
+            gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.DesPos.get(randomEnd)));
     }
 
         public void setDefaultValues() {
@@ -87,18 +83,17 @@ public class AutoAgv extends Entity{
                 int goalCol = endPos.x/gp.tileSize;
                 int goalRow = endPos.y/gp.tileSize;
 
-                searchPath(goalCol, goalRow);
+                if(searchPath(goalCol, goalRow)==false) {
+                    try{
+                        eliminate(this);
+                    }catch (BadLocationException e){
+
+                    }
+                }
 
                 return;
             }
             else if(onPath==false && isOnGate==0){
-               /* isGettingDes=true;
-                setTimeout(()-> {
-                    isGettingDes=false;
-                    isOnGate++;
-                    onPath=true;
-                    endPos.x=50*gp.tileSize;
-                    endPos.y=14*gp.tileSize;}, 2000);*/
                 int midX = x + 16;
                 int midY = y + 16;
                 int midEndX = endPos.x + 16;
@@ -144,59 +139,52 @@ public class AutoAgv extends Entity{
                         isGettingDes=false;
                         isOnGate++;
                         onPath=true;
-                        endPos.x=50*gp.tileSize;
-                        endPos.y=14*gp.tileSize;}, 2000);
+                        endPos.x=49*gp.tileSize;
+                        int tmp=0;
+                        if(this.agvID%2==1) tmp=13;
+                        else tmp=14;
+                        endPos.y=tmp*gp.tileSize;}, 2000);
                 }
             }
             else {
-                eliminate(this);
+                try{
+                    eliminate(this);
+                }catch (BadLocationException e){
+
+                }
             }
-//        else {
-//            int midX = x + 16;
-//            int midY = y + 16;
-//            int midEndX = endPos.x + 16;
-//            int midEndY = endPos.y + 16;
-//
-//            if(midX <= midEndX - 16) direction = "right";
-//            else if(midX >= midEndX + 16) direction = "left";
-//            else if(midY <= midEndY - 16) direction = "down";
-//            else if(midY >= midEndY + 16) direction = "up";
-//            else eliminate(this);
-//        }
         }
 
-        public void eliminate(AutoAgv autoAgv) {
+        public void eliminate(AutoAgv autoAgv) throws BadLocationException {
+            GamePanel.CountAutoAgvInit--;
             gp.autoAgvs.remove(autoAgv);
-            if(gp.autoAgvs.size() < autoAgvNum) {
-                Random random = new Random();
-                int index = random.nextInt(autoAgvNum);
-                bornRandomAutoAgv(gp);
+            int lines=gp.sc.ta.getLineCount();
+            try{
+                for(int i=0;i<lines-1;i++){
+                    int start=gp.sc.ta.getLineStartOffset(i);
+                    int end=gp.sc.ta.getLineEndOffset(i);
+                    String tmp1=gp.sc.ta.getText(start,end-start);
+                    int x=tmp1.indexOf('_')+1;
+                    int y=tmp1.indexOf(':');
+                    String tmp2=tmp1.substring(x,y);
+                    int idValue=0;
+                    if(tmp2.length()==1) idValue=tmp2.charAt(0)-'0';
+                    else{
+                        idValue=(tmp2.charAt(1)-'0') + (tmp2.charAt(0)-'0')*10;
+                    }
+                    if(idValue==this.agvID){
+                        gp.sc.ta.replaceRange("",start,end);
+                        break;
+                    }
+                }
+            }catch (BadLocationException e){
+
             }
         }
-
-        /*public static void setTimeout(Runnable runnable, int delay){
-            new Thread(() -> {
-                try {
-                    Thread.sleep(delay);
-                    runnable.run();
-                }
-                catch (Exception e){
-                    System.err.println(e);
-                }
-            }).start();
-        }*/
-
-        /*public void handleOverlap() {
-            if(this.isOverlap) return;
-            this.isOverlap = true;
-            setTimeout(() -> this.isOverlap = false, 4000);
-            justCollided = false;
-        }*/
 
         public void update() {
 
             if(isGettingDes==true) return;
-            //if(this.isOverlap) return;
             // HANDLER AUTOAGV COLLISION
             gp.cChecker.checkAutoAgv(this);
             if(checkAutoAgvMove==true ){
@@ -204,31 +192,34 @@ public class AutoAgv extends Entity{
                     checkAutoAgvMove=false;
                 }, 1);
             }
-            if(checkAutoAgvMove==true) return;
-
+            if(countTimeDeadLock==600 && lock==false){
+                isFree=true;
+                lock=true;
+                setTimeout(()-> {
+                    isFree=false;
+                    lock=false;
+                }, 2000);
+            }
+            if(checkAutoAgvMove==true && isFree==false) {
+                countTimeDeadLock++;
+                return;
+            }
             setAction();
-
+            countTimeDeadLock=0;
             collisionOn = false;
             gp.cChecker.checkTile(this);
-           // gp.cChecker.checkPlayer(this);
-           // if(justCollided) handleOverlap();
 
             //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
+
+            if(haveChangeX==true) return;
             if(!collisionOn) {
                 switch (direction) {
                     case "up" -> y -= speed;
                     case "down" -> y += speed;
-                    case "left" -> {
-                        if(haveChangeX==false)
-                          x -= speed;
-                    }
-                    case "right" -> {
-                        if(haveChangeX==false)
-                           x += speed;
-                    }
+                    case "left" -> x -= speed;
+                    case "right" -> x += speed;
                 }
             }
-
         }
 
         public void draw(Graphics2D g2){
@@ -239,5 +230,8 @@ public class AutoAgv extends Entity{
                 g2.drawString(endText.text, endText.x, endText.y);
             //DRAW AUTOAGV
             g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);
+        }
+        public double calculateDes(){
+            return Math.floor(Math.abs(endPos.x- startPos.x)+Math.abs(endPos.y- startPos.y))*0.085;
         }
 }

@@ -27,6 +27,8 @@ public class Entity {
     public boolean onPath = true;
     public boolean onGate=true;
     public boolean checkAutoAgvMove=false;
+    public double deadLine;
+    public static boolean justEliminate=false;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -107,12 +109,31 @@ public class Entity {
             if(nextCol == goalCol && nextRow == goalRow) onPath = false;
             return true;
         } else {
-            System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
+            //System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
             return false;
         }
        // else System.out.println("KHONG TIM DUOC DUONG!!!!!!!"+goalCol+"  " +goalRow);
     }
     public void update() {}
+
+    public String secondToHMS(){
+        int h= (int) Math.floor(deadLine/3600);
+        int m=(int)Math.floor(deadLine/60);
+        int s=(int)Math.floor(deadLine%60);
+
+        String res="DES_";
+        res+=_id+":  ";
+        if(h<10) res+="0";
+        res+= h +":";
+        if(m<10) res+="0";
+        res+= m +":";
+        if(s<10) res+="0";
+        res+=Integer.toString(s);
+        res+=" ± 4";
+
+        return res;
+    }
+
 }
 
 class Text {

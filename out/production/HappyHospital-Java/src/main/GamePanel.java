@@ -3,6 +3,7 @@ package main;
 import entity.Agent;
 import entity.Agv;
 import entity.AutoAgv;
+import entity.Entity;
 import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
 import tilesMap.TileManager;
@@ -36,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList<Position> doorPos = new ArrayList<>();
     public ArrayList<Position> DesPos = new ArrayList<>();
     public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
+    public ScrollBarPane sc=new ScrollBarPane();
 
     public int gameState;
     public final int playState = 1;
@@ -100,9 +102,21 @@ public class GamePanel extends JPanel implements Runnable {
             }
             // LAM CHO AUTOAGV RA MOT CACH TUAN TU
             CountTime++;
-            if(CountTime==60 && CountAutoAgvInit<AutoAgv.autoAgvNum)
+            if(CountTime>=60 && CountAutoAgvInit<AutoAgv.autoAgvNum)
             {
+                CountAutoAgvInit++;
                 AutoAgv.bornRandomAutoAgv(this);
+                //AUTOAGV DEADLINE
+                String outPut="";
+                for(int i=0;i<autoAgvs.size();i++){
+                    if(autoAgvs.get(i)!=null){
+                        if(autoAgvs.get(i).agvID==Entity._id){
+                            outPut=autoAgvs.get(i).secondToHMS();
+                            break;
+                        }
+                    }
+                }
+                sc.ta.append(outPut+"\n");
                 CountTime=0;
             }
             for(int i = 0; i < autoAgvs.size(); i++)
