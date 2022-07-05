@@ -32,12 +32,12 @@ public class GamePanel extends JPanel implements Runnable {
     public PathFinder pFinder = new PathFinder(this);
     Thread gameThread;
 
+    public ScrollBarPane sc=new ScrollBarPane();
     public Agv player = new Agv(this, keyH);
     public ArrayList<Agent> agent = new ArrayList<Agent>();
     public ArrayList<Position> doorPos = new ArrayList<>();
     public ArrayList<Position> DesPos = new ArrayList<>();
     public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
-    public ScrollBarPane sc=new ScrollBarPane();
 
     public int gameState;
     public final int playState = 1;

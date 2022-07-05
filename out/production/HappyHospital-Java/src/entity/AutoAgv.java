@@ -210,7 +210,7 @@ public class AutoAgv extends Entity{
             gp.cChecker.checkTile(this);
 
             //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
-            
+
             if(haveChangeX==true) return;
             if(!collisionOn) {
                 switch (direction) {

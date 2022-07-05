@@ -12,7 +12,7 @@ public class Entity {
     static GamePanel gp;
     public int x, y;
     public int speed;
-    public static int  _id = 0;
+    public static int  _id = 1;
     public final int agvID;
     public BufferedImage entityImage;
     public String direction;
@@ -35,7 +35,9 @@ public class Entity {
         if(this instanceof AutoAgv) {
             Entity._id++;
             this.agvID = Entity._id;
-        } else this.agvID = -1; //Ám chỉ đây là agent
+        }
+        else if(this instanceof Agv) this.agvID=1;
+        else this.agvID = -1; //Ám chỉ đây là agent
     }
 
     public void setDefaultValues(){}
@@ -122,7 +124,7 @@ public class Entity {
         int s=(int)Math.floor(deadLine%60);
 
         String res="DES_";
-        res+=_id+":  ";
+        res+=this.agvID+":  ";
         if(h<10) res+="0";
         res+= h +":";
         if(m<10) res+="0";

@@ -5,6 +5,7 @@ import gameAlgo.Position;
 import main.GamePanel;
 import main.KeyHandler;
 
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -74,6 +75,9 @@ public class Agv extends Entity {
             goalText.text = "DES";
             goalText.x = goalPos.x + 11;
             goalText.y = goalPos.y + 16;
+            deadLine=calculateDes();
+            String output=this.secondToHMS();
+            gp.sc.ta.append(output+"\n");
         }
         public void getPlayerImage(){
 
@@ -158,25 +162,19 @@ public class Agv extends Entity {
                     }
                 }
 
-
-
-
                 //CHECK IF AGV TOUCH GOAL
                 if(goalText.x -11 <= x && x <= goalText.x + 21 &&
                    goalText.y -16 <= y && y <= goalText.y + 16) {
-                    /*this.speed = 0;
-                    setTimeout(()->{
-                        this.speed = 1;
-                        this.goalText = null;}, 1000);*/
 
+                    reachToDestination();
                     Random random = new Random();
-
                     int randomGoal = random.nextInt(DesPos.size());
                     this.goalPos = DesPos.get(randomGoal);
-
                     goalText.x = goalPos.x + 11;
                     goalText.y = goalPos.y + 16;
-
+                    deadLine=calculateDes();
+                    String output=this.secondToHMS();
+                    gp.sc.ta.append(output+"\n");
                 }
 
                 //UPDATE TEXT
@@ -224,4 +222,32 @@ public class Agv extends Entity {
             if(!isValidDirection) toastInvalidMove(g2);
             g2.drawImage(entityImage, this.x, this.y,gp.tileSize,gp.tileSize,null);
         }
+    public double calculateDes() {
+        return Math.floor(Math.abs(goalPos.x - x) + Math.abs(goalPos.y - y)) * 0.085;
     }
+    public void reachToDestination(){
+
+        int lines=gp.sc.ta.getLineCount();
+        try{
+            for(int i=0;i<lines-1;i++){
+                int start=gp.sc.ta.getLineStartOffset(i);
+                int end=gp.sc.ta.getLineEndOffset(i);
+                String tmp1=gp.sc.ta.getText(start,end-start);
+                int x=tmp1.indexOf('_')+1;
+                int y=tmp1.indexOf(':');
+                String tmp2=tmp1.substring(x,y);
+                int idValue=0;
+                if(tmp2.length()==1) idValue=tmp2.charAt(0)-'0';
+                else{
+                    idValue=(tmp2.charAt(1)-'0') + (tmp2.charAt(0)-'0')*10;
+                }
+                if(idValue==this.agvID){
+                    gp.sc.ta.replaceRange("",start,end);
+                    break;
+                }
+            }
+        }catch (BadLocationException e){
+
+        }
+    }
+}
