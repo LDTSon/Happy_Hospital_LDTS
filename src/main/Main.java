@@ -8,7 +8,7 @@ public class Main {
         JFrame window = new JFrame();
         window.getDefaultCloseOperation();
         window.setResizable(false);
-        window.setTitle("Happy Hospital - Em ham mo anh Son");
+        window.setTitle("Sơn gaming và fanclub");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         GamePanel gamePanel = new GamePanel();

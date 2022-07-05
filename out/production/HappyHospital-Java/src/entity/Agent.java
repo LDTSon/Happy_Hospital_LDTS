@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Agent extends Entity{
+
+    public static boolean[] idListCheck = new boolean[1000];
     private Position startPos;
     private Position endPos;
     private int id;
@@ -62,7 +64,12 @@ public class Agent extends Entity{
     public static void bornRandomAgent(GamePanel gp) {
         if(gp.agent.size() < agentNum) {
             Random random = new Random();
-            int index = random.nextInt(agentNum);
+            int index;
+            do {
+                index = random.nextInt(agentNum);
+            } while(Agent.idListCheck[index] == true);
+            Agent.idListCheck[index] = true;
+
             int randomStart = random.nextInt(gp.doorPos.size());
             int randomEnd;
             do {
@@ -113,6 +120,7 @@ public class Agent extends Entity{
     }
 
     public void eliminate(Agent agent) {
+        Agent.idListCheck[agent.id] = false;
         gp.agent.remove(agent);
         bornRandomAgent(gp);
     }

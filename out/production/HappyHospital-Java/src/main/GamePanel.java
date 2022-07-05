@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     static int sCount = 0;
     //FPS
-    int FPS = 30;
+    int FPS = 120;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
@@ -41,6 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int endState = 3;
     public static int CountAutoAgvInit=0;
     public static int CountTime = 0;
 
@@ -120,7 +121,12 @@ public class GamePanel extends JPanel implements Runnable {
                 sCount = 0;
             }
         }
-        if(gameState == pauseState) {
+
+        else if(gameState == pauseState) {
+        }
+
+        else if(gameState == endState) {
+
         }
     }
     public void paintComponent(Graphics g){

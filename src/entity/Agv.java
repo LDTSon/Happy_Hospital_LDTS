@@ -13,6 +13,7 @@ public class Agv extends Entity {
         private boolean isImmortal = false; // biến cần cho xử lý overlap =))
         private boolean isDisable = false; // biến cần cho xử lý overlap =))
         private Position goalPos;
+        public boolean goalReached;
         private Text goalText = new Text();
         Font arial_17;
         Font arial_30;
@@ -133,13 +134,17 @@ public class Agv extends Entity {
                 }
 
                 //CHECK IF AGV TOUCH GOAL
-                if(goalPos.x - 3 <= x && x <= goalPos.x + 3 &&
-                   goalPos.y - 3 <= y && y <= goalPos.y + 3) {
+                if(goalPos.x - 4 <= x && x <= goalPos.x + 4 &&
+                   goalPos.y - 4 <= y && y <= goalPos.y + 4) {
+                    goalReached = true;
                     this.speed = 0;
                     setTimeout(()->{
                         this.speed = 1;
                         this.goalText = null;}, 1000);
                 }
+
+                //CHECK IF AGV REACHED END POS
+                if(this.x >= 50*gp.tileSize) gp.gameState = gp.endState;
 
                 //UPDATE TEXT
                 entityText.x = this.x + 12 - entityText.textLength/2;

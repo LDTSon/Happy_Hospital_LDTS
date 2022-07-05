@@ -35,6 +35,26 @@ public class UI {
         if(gp.gameState == gp.pauseState) {
             drawPauseScreen();
         }
+
+        if(gp.gameState == gp.endState) {
+            System.out.println("what???");
+            drawEndScreen();
+        }
+    }
+
+    private void drawEndScreen() {
+
+        System.out.println("draw end screen");
+
+        g2.setColor(Color.RED);
+        g2.setFont(arial_80B);
+        g2.drawString("GAME ENDED", getXForCenteredText("GAME ENDED"), gp.tileSize*12);
+
+        if(gp.player.goalReached == true) {
+            g2.drawString("FINISHED :)", getXForCenteredText("FINISHED :)"), gp.tileSize*15);
+        } else {
+            g2.drawString("UNFINISHED :(", getXForCenteredText("UNFINISHED :("), gp.tileSize*15);
+        }
     }
 
     private void drawPauseScreen() {
