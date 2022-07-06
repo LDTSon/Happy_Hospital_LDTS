@@ -113,8 +113,6 @@ public class AutoAgv extends Entity{
                 haveChangeX=false;
                 if(!collisionOn) {
                     switch (direction) {
-                        case "up" -> y -= speed;
-                        case "down" -> y += speed;
                         case "left" -> {
                             x -= speed;haveChangeX=true;
                         }
@@ -186,10 +184,10 @@ public class AutoAgv extends Entity{
 
             if(isGettingDes==true) return;
             // HANDLER AUTOAGV COLLISION
-            gp.cChecker.checkAutoAgv(this);
-            if(checkAutoAgvMove==true ){
+            gp.cChecker.checkMove(this,20);
+            if(checkMoveEntity==true ){
                 setTimeout(()-> {
-                    checkAutoAgvMove=false;
+                    checkMoveEntity=false;
                 }, 1);
             }
             if(countTimeDeadLock==600 && lock==false){
@@ -200,7 +198,7 @@ public class AutoAgv extends Entity{
                     lock=false;
                 }, 2000);
             }
-            if(checkAutoAgvMove==true && isFree==false) {
+            if(checkMoveEntity==true && isFree==false) {
                 countTimeDeadLock++;
                 return;
             }

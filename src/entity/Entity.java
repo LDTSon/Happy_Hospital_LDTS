@@ -26,7 +26,7 @@ public class Entity {
     public Text entityText = new Text();
     public boolean onPath = true;
     public boolean onGate=true;
-    public boolean checkAutoAgvMove=false;
+    public boolean checkMoveEntity=false;
     public double deadLine;
     public static boolean justEliminate=false;
 
