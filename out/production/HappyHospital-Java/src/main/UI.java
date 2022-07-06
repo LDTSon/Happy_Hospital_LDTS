@@ -13,6 +13,7 @@ public class UI {
     Graphics2D g2;
     Font arial_28B,arial_80B;
     public int commandNum = 0;
+    public int titleScreenState = 0;
 //    double playTime;
 //    DecimalFormat dFormat = new DecimalFormat("#0.00");
     public UI(GamePanel  gp){
@@ -29,6 +30,10 @@ public class UI {
         g2.setFont(arial_80B);
         g2.setColor(Color.RED);
 
+        if(gp.gameState == gp.titleState) {
+            drawTitleScreen();
+        }
+
         if(gp.gameState == gp.playState) {
 
         }
@@ -37,9 +42,92 @@ public class UI {
         }
 
         if(gp.gameState == gp.endState) {
-            System.out.println("what???");
             drawEndScreen();
         }
+    }
+
+    private void drawTitleScreen() {
+
+        if(titleScreenState == 0) {
+            //TITLE NAME
+            g2.setFont(arial_80B);
+            String text = "Happy Hospital";
+            int x = getXForCenteredText(text);
+            int y = gp.tileSize * 12;
+
+            //SHADOW
+            g2.setColor(Color.gray);
+            g2.drawString(text, x+5, y+5);
+            //MAIN COLOR
+            g2.setColor(Color.white);
+            g2.drawString(text, x, y);
+
+            //MENU
+            g2.setFont(arial_28B);
+            y += gp.tileSize*4;
+
+            text = "NEW GAME";
+            x = getXForCenteredText(text);
+            y += gp.tileSize*2;
+            g2.drawString(text, x, y);
+            if(commandNum == 0) g2.drawString(">", x - gp.tileSize, y);
+
+            text = "LOAD GAME";
+            x = getXForCenteredText(text);
+            y += gp.tileSize*2;
+            g2.drawString(text, x, y);
+            if(commandNum == 1) g2.drawString(">", x - gp.tileSize, y);
+
+            text = "QUIT";
+            x = getXForCenteredText(text);
+            y += gp.tileSize*2;
+            g2.drawString(text, x, y);
+            if(commandNum == 2) g2.drawString(">", x - gp.tileSize, y);
+        } else if(titleScreenState == 1) {
+
+            //CHARACTER SELECTION SCREEN
+            g2.setColor(Color.white);
+            g2.setFont(arial_80B);
+
+            String text = "Select your character!";
+            int x = getXForCenteredText(text);
+            int y = gp.tileSize * 8;
+            g2.drawString(text, x, y);
+
+            g2.setFont(arial_28B);
+            y += gp.tileSize*12;
+
+            text = "Red";
+            x = gp.tileSize*11;
+            g2.drawString(text, x, y);
+            g2.drawImage(gp.player.agvImage[0], x-gp.tileSize*2, y-gp.tileSize*8, gp.tileSize*6, gp.tileSize*6, null);
+            if(commandNum == 0) g2.drawString(">", x - gp.tileSize, y);
+
+            text = "Green";
+            x += gp.tileSize*10;
+            g2.drawString(text, x, y);
+            g2.drawImage(gp.player.agvImage[1], x-gp.tileSize*2, y-gp.tileSize*8, gp.tileSize*6, gp.tileSize*6, null);
+            if(commandNum == 1) g2.drawString(">", x - gp.tileSize, y);
+
+            text = "Yellow";
+            x += gp.tileSize*10;
+            g2.drawString(text, x, y);
+            g2.drawImage(gp.player.agvImage[2], x-gp.tileSize*2, y-gp.tileSize*8, gp.tileSize*6, gp.tileSize*6, null);
+            if(commandNum == 2) g2.drawString(">", x - gp.tileSize, y);
+
+            text = "Blue";
+            x += gp.tileSize*10;
+            g2.drawString(text, x, y);
+            g2.drawImage(gp.player.agvImage[3], x-gp.tileSize*2, y-gp.tileSize*8, gp.tileSize*6, gp.tileSize*6, null);
+            if(commandNum == 3) g2.drawString(">", x - gp.tileSize, y);
+
+            text = "Back";
+            x = getXForCenteredText(text);
+            y += gp.tileSize*4;
+            g2.drawString(text, x, y);
+            if(commandNum == 4) g2.drawString(">", x - gp.tileSize, y);
+        }
+
     }
 
     private void drawEndScreen() {

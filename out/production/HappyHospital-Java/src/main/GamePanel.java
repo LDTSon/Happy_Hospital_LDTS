@@ -10,6 +10,7 @@ import tilesMap.TileManager;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -21,9 +22,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize*maxScreenCol;//52*32
     public final int screenHeight = tileSize*maxScreenRow;//28*32
 
-    static int sCount = 0;
     //FPS
-    int FPS = 120;
+    int FPS = 30;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
@@ -39,6 +39,7 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
 
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
     public final int endState = 3;
@@ -53,7 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-        this.gameState = playState;
+        this.gameState = titleState;
         setupGame();
 
     }
@@ -62,14 +63,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         Position.getDoorPosition(this);
         Position.getDesPosition(this);
+
         this.player = new Agv(this, keyH);
 
         for(int i = 0; i < Agent.agentNum; i++) {
             Agent.bornRandomAgent(this);
         }
-        /*for(int i = 0; i < AutoAgv.autoAgvNum; i++) {
-            AutoAgv.bornRandomAutoAgv(this);
-        }*/
     }
 
     public void startGameThread() {
@@ -93,21 +92,24 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
         }
+        player = new Agv(this, keyH);
     }
     public void update(){
         if(gameState == playState) {
-            sCount++;
-            if(sCount == 60) {
-                Agent.bornRandomAgent(this);
-                sCount = 0;
-            }
-            // LAM CHO AUTOAGV RA MOT CACH TUAN TU
-            CountTime++;
-            if(CountTime==60 && CountAutoAgvInit<AutoAgv.autoAgvNum)
+
+            //BORN AGENT
+            Random random = new Random();
+            if(random.nextInt(10000) < Agent.agentNum) Agent.bornRandomAgent(this);
+            //BORN AUTOAGV
+            CountTime += Agent.agentNum/2;
+            if(CountTime > 1000)
             {
+                AutoAgv.autoAgvNum = Agent.agentNum;
                 AutoAgv.bornRandomAutoAgv(this);
-                CountTime=0;
+                CountTime = 0;
             }
+
+            //UPDATE
             for(int i = 0; i < autoAgvs.size(); i++)
                 if(autoAgvs.get(i) != null) autoAgvs.get(i).update();
 
@@ -115,11 +117,7 @@ public class GamePanel extends JPanel implements Runnable {
                 if(agent.get(i) != null) agent.get(i).update();
 
             player.update();
-            sCount++;
-            if(sCount == 60) {
-                Agent.bornRandomAgent(this);
-                sCount = 0;
-            }
+
         }
 
         else if(gameState == pauseState) {
@@ -134,19 +132,24 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D)g;
 
-        //TILE
-        tileM.draw(g2);
-        //AUTOAGV
+        //TITLE SCREEN
+        if(gameState == titleState) {
+            ui.draw(g2);
+        } else {
+            //TILE
+            tileM.draw(g2);
+            //AUTOAGV
 
-        for(int i = 0; i < autoAgvs.size(); i++)
-            if(autoAgvs.get(i) != null) autoAgvs.get(i).draw(g2);
-        //AGENT
-        for(int i = 0; i < agent.size(); i++)
-            if(agent.get(i) != null) agent.get(i).draw(g2);
-        //PLAYER AGV
-        player.draw(g2);
-        //UI
-        ui.draw(g2);
+            for(int i = 0; i < autoAgvs.size(); i++)
+                if(autoAgvs.get(i) != null) autoAgvs.get(i).draw(g2);
+            //AGENT
+            for(int i = 0; i < agent.size(); i++)
+                if(agent.get(i) != null) agent.get(i).draw(g2);
+            //PLAYER AGV
+            player.draw(g2);
+            //UI
+            ui.draw(g2);
+        }
 
         g2.dispose();
     }

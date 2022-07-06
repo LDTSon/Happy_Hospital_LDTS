@@ -25,8 +25,69 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
 
-        if(gp.gameState == gp.playState) playState(code);
+        if(gp.gameState == gp.titleState) titleState(code);
+        else if(gp.gameState == gp.playState) playState(code);
         else if(gp.gameState == gp.pauseState) pauseState(code);
+    }
+
+    private void titleState(int code) {
+
+        if(gp.ui.titleScreenState == 0) {
+            if(code == KeyEvent.VK_W){
+                gp.ui.commandNum--;
+                if(gp.ui.commandNum < 0) gp.ui.commandNum = 2;
+            }
+            if(code == KeyEvent.VK_S){
+                gp.ui.commandNum++;
+                if(gp.ui.commandNum > 2) gp.ui.commandNum = 0;
+            }
+            if(code == KeyEvent.VK_ENTER){
+                switch (gp.ui.commandNum) {
+                    case 0 -> {
+                        gp.ui.titleScreenState = 1;
+                        gp.ui.commandNum = 0;
+                    }
+                    case 1 -> {}
+                    case 2 -> System.exit(0);
+                }
+            }
+        }
+        else if(gp.ui.titleScreenState == 1) {
+
+            if(code == KeyEvent.VK_W){
+                gp.ui.commandNum--;
+                if(gp.ui.commandNum < 0) gp.ui.commandNum = 4;
+            }
+            if(code == KeyEvent.VK_S){
+                gp.ui.commandNum++;
+                if(gp.ui.commandNum > 4) gp.ui.commandNum = 0;
+            }
+            if(code == KeyEvent.VK_ENTER){
+                switch (gp.ui.commandNum) {
+                    case 0 -> {
+                        gp.player.entityImage = gp.player.agvImage[0];
+                        gp.gameState = gp.playState;
+                    }
+                    case 1 -> {
+                        gp.player.entityImage = gp.player.agvImage[1];
+                        gp.gameState = gp.playState;
+                    }
+                    case 2 -> {
+                        gp.player.entityImage = gp.player.agvImage[2];
+                        gp.gameState = gp.playState;
+                    }
+                    case 3 -> {
+                        gp.player.entityImage = gp.player.agvImage[3];
+                        gp.gameState = gp.playState;
+                    }
+                    case 4 -> {
+                        gp.ui.titleScreenState = 0;
+                        gp.ui.commandNum = 0;
+                    }
+                }
+            }
+        }
+
     }
 
     public void playState(int code) {
@@ -51,7 +112,7 @@ public class KeyHandler implements KeyListener {
     public void pauseState(int code) {
         if(code == KeyEvent.VK_W){
             gp.ui.commandNum--;
-            if(gp.ui.commandNum < 0) gp.ui.commandNum = 2;
+            if(gp.ui.commandNum < 0) gp.ui.commandNum = 3;
         }
         if(code == KeyEvent.VK_S){
             gp.ui.commandNum++;

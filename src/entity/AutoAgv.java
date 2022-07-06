@@ -48,13 +48,14 @@ public class AutoAgv extends Entity{
     }
 
     public static void bornRandomAutoAgv(GamePanel gp) {
-        Random random = new Random();
-        int index = id++;
-        Position startPoint=new Position(2*gp.tileSize,14*gp.tileSize);
-        int randomEnd = random.nextInt(gp.desPos.size());
+        if(gp.autoAgvs.size() < autoAgvNum) {
+            Random random = new Random();
+            int index = id++;
+            Position startPoint=new Position(2*gp.tileSize,14*gp.tileSize);
+            int randomEnd = random.nextInt(gp.desPos.size());
 
-        gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.desPos.get(randomEnd), index));
-
+            gp.autoAgvs.add(new AutoAgv(gp, startPoint, gp.desPos.get(randomEnd), index));
+        }
     }
 
     public void setDefaultValues() {
@@ -74,12 +75,11 @@ public class AutoAgv extends Entity{
         endText.y = endPos.y + 16;
 
         onPath = true;
-        //handlerStuck=0;
     }
 
     public void getAutoAgvImage(){
 
-        entityImage = setup("agv");
+        entityImage = setup("agvRed");
     }
 
     public void setAction() {
@@ -93,13 +93,7 @@ public class AutoAgv extends Entity{
             return;
         }
         else if(onPath==false && isOnGate==0){
-               /* isGettingDes=true;
-                setTimeout(()-> {
-                    isGettingDes=false;
-                    isOnGate++;
-                    onPath=true;
-                    endPos.x=50*gp.tileSize;
-                    endPos.y=14*gp.tileSize;}, 2000);*/
+
             int midX = x + 16;
             int midY = y + 16;
             int midEndX = endPos.x + 16;
@@ -132,13 +126,15 @@ public class AutoAgv extends Entity{
             }
 
             if(midY <= midEndY - 2) {
-                direction = "down";flag=true;
+                direction = "down";
+                flag = true;
             }
             else if(midY >= midEndY + 2) {
-                direction = "up";flag=true;
+                direction = "up";
+                flag = true;
             }
 
-            if(flag==false) {
+            if(!flag) {
                 isGettingDes=true;
                 haveChangeX=false;
                 setTimeout(()-> {
@@ -149,54 +145,16 @@ public class AutoAgv extends Entity{
                     endPos.y=14*gp.tileSize;}, 2000);
             }
         }
-        else {
-            eliminate(this);
-        }
-//        else {
-//            int midX = x + 16;
-//            int midY = y + 16;
-//            int midEndX = endPos.x + 16;
-//            int midEndY = endPos.y + 16;
-//
-//            if(midX <= midEndX - 16) direction = "right";
-//            else if(midX >= midEndX + 16) direction = "left";
-//            else if(midY <= midEndY - 16) direction = "down";
-//            else if(midY >= midEndY + 16) direction = "up";
-//            else eliminate(this);
-//        }
+        else eliminate(this);
     }
 
     public void eliminate(AutoAgv autoAgv) {
         gp.autoAgvs.remove(autoAgv);
-        if(gp.autoAgvs.size() < autoAgvNum) {
-            Random random = new Random();
-            int index = random.nextInt(autoAgvNum);
-            bornRandomAutoAgv(gp);
-        }
     }
-
-        /*public static void setTimeout(Runnable runnable, int delay){
-            new Thread(() -> {
-                try {
-                    Thread.sleep(delay);
-                    runnable.run();
-                }
-                catch (Exception e){
-                    System.err.println(e);
-                }
-            }).start();
-        }*/
-
-        /*public void handleOverlap() {
-            if(this.isOverlap) return;
-            this.isOverlap = true;
-            setTimeout(() -> this.isOverlap = false, 4000);
-            justCollided = false;
-        }*/
 
     public void update() {
 
-        if(isGettingDes==true) return;
+        if(isGettingDes == true) return;
         //if(this.isOverlap) return;
         // HANDLER AUTOAGV COLLISION
 //        gp.cChecker.checkAutoAgv(this);
@@ -211,8 +169,7 @@ public class AutoAgv extends Entity{
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
-        // gp.cChecker.checkPlayer(this);
-        // if(justCollided) handleOverlap();
+
 
         //IF COLLISION IS TRUE -> PLAYER CAN'T MOVE
         if(!collisionOn) {
@@ -229,6 +186,9 @@ public class AutoAgv extends Entity{
                 }
             }
         }
+
+        //CHECK AUTOAGV REACHED END
+        if(this.x > 49*gp.tileSize) eliminate(this);
 
     }
 

@@ -6,9 +6,12 @@ import main.GamePanel;
 import main.KeyHandler;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Agv extends Entity {
+
+        public BufferedImage agvImage[] = new BufferedImage[4];
         public boolean isValidDirection = true;
         private boolean isImmortal = false; // biến cần cho xử lý overlap =))
         private boolean isDisable = false; // biến cần cho xử lý overlap =))
@@ -52,7 +55,10 @@ public class Agv extends Entity {
         }
         public void getPlayerImage(){
 
-            entityImage = setup("agv");
+            agvImage[0] = setup("agvRed");
+            agvImage[1] = setup("agvGreen");
+            agvImage[2] = setup("agvYellow");
+            agvImage[3] = setup("agvBlue");
         }
 
         public void toastInvalidMove(Graphics2D g2){

@@ -5,10 +5,12 @@ import entity.AutoAgv;
 import entity.Entity;
 public class CollisionChecker {
     GamePanel gp;
-    public CollisionChecker(GamePanel gp){
+
+    public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
-    public void checkTile(Entity entity){
+
+    public void checkTile(Entity entity) {
 
         int entityLeftWorldX = entity.x + entity.solidArea.x;
         int entityRightWorldX = entity.x + entity.solidArea.x + entity.solidArea.width;
@@ -16,14 +18,14 @@ public class CollisionChecker {
         int entityTopWorldY = entity.y + entity.solidArea.y;
         int entityBottomWorldY = entity.y + entity.solidArea.y + entity.solidArea.height;
 
-        int entityLeftCol = entityLeftWorldX/gp.tileSize;
-        int entityRightCol = entityRightWorldX/gp.tileSize;
-        int entityTopRow = entityTopWorldY/gp.tileSize;
-        int entityBottomRow = entityBottomWorldY/gp.tileSize;
+        int entityLeftCol = entityLeftWorldX / gp.tileSize;
+        int entityRightCol = entityRightWorldX / gp.tileSize;
+        int entityTopRow = entityTopWorldY / gp.tileSize;
+        int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
         int tileNum1, tileNum2;
 
-        if(entity instanceof Agv || entity instanceof AutoAgv) {
+        if (entity instanceof Agv || entity instanceof AutoAgv) {
             switch (entity.direction) {
                 case "up" -> {
                     entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
@@ -58,7 +60,7 @@ public class CollisionChecker {
                     }
                 }
             }
-        } else if(entity instanceof Agent) {
+        } else if (entity instanceof Agent) {
             switch (entity.direction) {
                 case "up" -> {
                     entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
@@ -141,7 +143,7 @@ public class CollisionChecker {
         gp.player.solidArea.x = gp.player.x + gp.player.solidArea.x;
         gp.player.solidArea.y = gp.player.y + gp.player.solidArea.y;
 
-        if(gp.player.solidArea.intersects(entity.solidArea)) {
+        if (gp.player.solidArea.intersects(entity.solidArea)) {
             entity.justCollided = true;
             gp.player.justCollided = true;
         }
@@ -151,5 +153,159 @@ public class CollisionChecker {
         gp.player.solidArea.x = gp.player.solidAreaDefaultX;
         gp.player.solidArea.y = gp.player.solidAreaDefaultY;
         return;
+    }
+
+    public void checkAutoAgv(AutoAgv entity) {
+
+        int i;
+        int multiply=6;
+        boolean flag=false;
+        switch (entity.direction){
+            case "up":
+                //Get entity's solid area position
+                entity.y=entity.y- multiply*entity.speed;
+                entity.solidArea.x = entity.x + entity.solidArea.x;
+                entity.solidArea.y = entity.y + entity.solidArea.y;
+                for( i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
+                        if(flag==true) break;
+                        //Get the object's solid area position
+
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
+
+                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
+                            entity.checkAutoAgvMove=true;
+                            flag=true;
+                        }
+                        gp.autoAgvs.get(i).solidArea.x = gp.player.solidAreaDefaultX;
+                        gp.autoAgvs.get(i).solidArea.y = gp.player.solidAreaDefaultY;
+                    }
+                }
+                entity.y=entity.y + multiply*entity.speed;
+                break;
+            case "down":
+                //Get entity's solid area position
+                entity.y=entity.y+ multiply*entity.speed;
+                entity.solidArea.x = entity.x + entity.solidArea.x;
+                entity.solidArea.y = entity.y + entity.solidArea.y;
+                flag=false;
+                for( i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
+                        if(flag==true) break;
+                        //Get the object's solid area position
+
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
+
+                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
+                            entity.checkAutoAgvMove=true;
+                            flag=true;
+                        }
+                        gp.autoAgvs.get(i).solidArea.x = gp.player.solidAreaDefaultX;
+                        gp.autoAgvs.get(i).solidArea.y = gp.player.solidAreaDefaultY;
+                    }
+                }
+                entity.y=entity.y - multiply*entity.speed;
+                break;
+            case "left":
+                //Get entity's solid area position
+                entity.x=entity.x- multiply*entity.speed;
+                entity.solidArea.x = entity.x + entity.solidArea.x;
+                entity.solidArea.y = entity.y + entity.solidArea.y;
+                flag=false;
+                for( i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
+                        if(flag==true) break;
+                        //Get the object's solid area position
+
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
+
+                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
+                            entity.checkAutoAgvMove=true;
+                            flag=true;
+                        }
+                        gp.autoAgvs.get(i).solidArea.x = gp.player.solidAreaDefaultX;
+                        gp.autoAgvs.get(i).solidArea.y = gp.player.solidAreaDefaultY;
+                    }
+                }
+                entity.x=entity.x+ multiply*entity.speed;
+                break;
+            case "right":
+                //Get entity's solid area position
+                entity.x=entity.x+ multiply*entity.speed;
+                entity.solidArea.x = entity.x + entity.solidArea.x;
+                entity.solidArea.y = entity.y + entity.solidArea.y;
+                flag=false;
+                for( i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
+                        if(flag==true) break;
+                        //Get the object's solid area position
+
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
+
+                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
+                            entity.checkAutoAgvMove=true;
+                            flag=true;
+                        }
+                        gp.autoAgvs.get(i).solidArea.x = gp.player.solidAreaDefaultX;
+                        gp.autoAgvs.get(i).solidArea.y = gp.player.solidAreaDefaultY;
+                    }
+                }
+                entity.x=entity.x- multiply*entity.speed;
+                break;
+        }
+        entity.solidArea.x = entity.solidAreaDefaultX;
+        entity.solidArea.y = entity.solidAreaDefaultY;
+
+        /*switch (entity.direction) {
+            case "up" -> {
+                entityTopRow = (entity.y - entity.speed);
+                for(int i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
+                        if(entityTopRow<=gp.autoAgvs.get(i).y+gp.tileSize) entity.checkAutoAgvMove=true;
+                    }
+                }
+            }
+            case "down" -> {
+                entityBottomRow = (entity.y + entity.speed);
+                for(int i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
+                        if(entityBottomRow>=gp.autoAgvs.get(i).y) entity.checkAutoAgvMove=true;
+                    }
+                }
+            }
+            case "left" -> {
+                entityLeftCol = (entity.x - entity.speed);
+                for(int i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
+                        if(entityLeftCol<=gp.autoAgvs.get(i).x+gp.tileSize) entity.checkAutoAgvMove=true;
+                    }
+                }
+            }
+            case "right" -> {
+                entityRightCol = (entity.x + entity.speed);
+                for(int i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(entity.agvID==gp.autoAgvs.get(i).agvID) {
+                            continue;
+                        }
+                        if(entityRightCol>=gp.autoAgvs.get(i).x) {
+                            System.out.println("?");
+                            entity.checkAutoAgvMove=true;
+                        }
+                    }
+                }
+            }
+        }*/
     }
 }

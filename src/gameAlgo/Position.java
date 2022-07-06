@@ -40,12 +40,12 @@ public class Position {
         while(col < gp.maxScreenCol && row < gp.maxScreenRow){
 
             int tileNum = gp.tileM.mapTileNum[col][row];
-            boolean check=gp.tileM.tile[tileNum].agvCollision;
+            boolean check = gp.tileM.tile[tileNum].agvCollision;
 
             int x = col*gp.tileSize;
             int y = row*gp.tileSize;
 
-            if(check==false && col>=5 && col<=45) gp.desPos.add(new Position(x, y));
+            if(check == false && col>=5 && col <= 45) gp.desPos.add(new Position(x, y));
 
             col++;
 
