@@ -4,7 +4,7 @@ public class Timer {
 
     private static int updatesSinceStart;
 
-    public Timer() {
+    public TimeControl() {
         updatesSinceStart = 0;
     }
 
