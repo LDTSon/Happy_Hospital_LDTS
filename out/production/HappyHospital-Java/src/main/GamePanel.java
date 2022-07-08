@@ -3,6 +3,7 @@ package main;
 import entity.Agent;
 import entity.Agv;
 import entity.AutoAgv;
+import entity.Entity;
 import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
 import tilesMap.TileManager;
@@ -23,17 +24,19 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize*maxScreenRow;//28*32
 
     //FPS
-    int FPS = 30;
+    int FPS = 120;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
     public UI ui = new UI(this);
+    public Timer timer = new Timer(this);
     public PathFinder pFinder = new PathFinder(this);
     Thread gameThread;
 
+    public ScrollBarPane sc = new ScrollBarPane();
     public Agv player;
-    public ArrayList<Agent> agent = new ArrayList<Agent>();
+    public ArrayList<Agent> agents = new ArrayList<>();
     public ArrayList<Position> doorPos = new ArrayList<>();
     public ArrayList<Position> desPos = new ArrayList<>();
     public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
@@ -44,11 +47,11 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState = 2;
     public final int endState = 3;
     public static int CountAutoAgvInit=0;
-    public static int CountTime = 0;
+    public static int countTime = 0;
 
     //Set player's default position
 
-    public GamePanel(){
+    public GamePanel() {
         this.setPreferredSize(new Dimension(52*tileSize,28*tileSize));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -56,7 +59,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.gameState = titleState;
         setupGame();
-
     }
 
 
@@ -99,24 +101,24 @@ public class GamePanel extends JPanel implements Runnable {
 
             //BORN AGENT
             Random random = new Random();
-            if(random.nextInt(10000) < Agent.agentNum) Agent.bornRandomAgent(this);
+            if(random.nextInt(15000) < Agent.agentNum) Agent.bornRandomAgent(this);
             //BORN AUTOAGV
-            CountTime += Agent.agentNum/2;
-            if(CountTime > 1000)
+            countTime += (int) (5*Math.log10(Agent.agentNum)) + 1;
+            if(countTime > 1500)
             {
-                AutoAgv.autoAgvNum = Agent.agentNum;
                 AutoAgv.bornRandomAutoAgv(this);
-                CountTime = 0;
+                countTime = 0;
             }
 
             //UPDATE
             for(int i = 0; i < autoAgvs.size(); i++)
                 if(autoAgvs.get(i) != null) autoAgvs.get(i).update();
 
-            for(int i = 0; i < agent.size(); i++)
-                if(agent.get(i) != null) agent.get(i).update();
+            for(int i = 0; i < agents.size(); i++)
+                if(agents.get(i) != null) agents.get(i).update();
 
             player.update();
+            timer.update();
 
         }
 
@@ -139,12 +141,11 @@ public class GamePanel extends JPanel implements Runnable {
             //TILE
             tileM.draw(g2);
             //AUTOAGV
-
             for(int i = 0; i < autoAgvs.size(); i++)
                 if(autoAgvs.get(i) != null) autoAgvs.get(i).draw(g2);
             //AGENT
-            for(int i = 0; i < agent.size(); i++)
-                if(agent.get(i) != null) agent.get(i).draw(g2);
+            for(int i = 0; i < agents.size(); i++)
+                if(agents.get(i) != null) agents.get(i).draw(g2);
             //PLAYER AGV
             player.draw(g2);
             //UI

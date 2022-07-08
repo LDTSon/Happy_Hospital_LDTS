@@ -107,6 +107,9 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_P) {
             gp.gameState = gp.pauseState;
         }
+        if(code == KeyEvent.VK_T) {
+            gp.ui.showPlayerStatus = !gp.ui.showPlayerStatus;
+        }
     }
 
     public void pauseState(int code) {

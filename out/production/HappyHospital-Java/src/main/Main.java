@@ -2,9 +2,10 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, FontFormatException {
         JFrame window = new JFrame();
         window.getDefaultCloseOperation();
         window.setResizable(false);

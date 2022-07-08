@@ -3,9 +3,7 @@ package entity;
 import gameAlgo.Position;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Random;
 
 public class Agent extends Entity{
@@ -58,11 +56,11 @@ public class Agent extends Entity{
     }
 
     public static void loadAgent(GamePanel gp) {
-        while(gp.agent.size() < agentNum) bornRandomAgent(gp);
+        while(gp.agents.size() < agentNum) bornRandomAgent(gp);
     }
 
     public static void bornRandomAgent(GamePanel gp) {
-        if(gp.agent.size() < agentNum) {
+        if(gp.agents.size() < agentNum) {
             Random random = new Random();
             int index;
             do {
@@ -76,7 +74,7 @@ public class Agent extends Entity{
                 randomEnd = random.nextInt(gp.doorPos.size());
             } while(randomStart == randomEnd);
 
-            gp.agent.add(new Agent(gp, gp.doorPos.get(randomStart), gp.doorPos.get(randomEnd), index));
+            gp.agents.add(new Agent(gp, gp.doorPos.get(randomStart), gp.doorPos.get(randomEnd), index));
         }
     }
 
@@ -93,17 +91,6 @@ public class Agent extends Entity{
 
             boolean found = searchPath(goalCol, goalRow);
             if(found) return;
-            else {
-//                Random random = new Random();
-//                int i = random.nextInt(4) + 1;
-//                switch (i) {
-//                    case 0 -> direction = "up";
-//                    case 1 -> direction = "left";
-//                    case 2 -> direction = "down";
-//                    case 3 -> direction = "right";
-//                }
-                //direction = "down";
-            }
         }
         else {
             int midX = x + 16;
@@ -121,7 +108,7 @@ public class Agent extends Entity{
 
     public void eliminate(Agent agent) {
         Agent.idListCheck[agent.id] = false;
-        gp.agent.remove(agent);
+        gp.agents.remove(agent);
         bornRandomAgent(gp);
     }
 

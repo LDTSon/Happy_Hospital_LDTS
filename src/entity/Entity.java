@@ -1,5 +1,6 @@
 package entity;
 import main.GamePanel;
+import main.Timer;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
@@ -14,21 +15,24 @@ public class Entity {
     public int speed;
     public static int  _id = 0;
     public final int agvID;
+    public double start;
     public BufferedImage entityImage;
     public String direction;
 
     public Rectangle solidArea;
     public boolean collisionOn = false;
     public boolean justCollided = false;
+    public int expectedTime;
 
     public int solidAreaDefaultX,solidAreaDefaultY;
     public int actionLockCounter = 0;
     public Text entityText = new Text();
     public boolean onPath = true;
+    public static double harmfulness = 0;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
-        if(this instanceof AutoAgv) {
+        if(this instanceof AutoAgv || this instanceof Agv) {
             Entity._id++;
             this.agvID = Entity._id;
         } else this.agvID = -1; //Ám chỉ đây là agent
@@ -109,6 +113,19 @@ public class Entity {
             return false;
         }
     }
+
+    public void estimateArrivalTime(int startX, int startY, int endX, int endY) {
+         this.expectedTime = (int) Math.floor(Math.sqrt((endX - startX)*(endX - startX) + (endY - startY)*(endY - startY))*0.085);
+    }
+
+    public void calHarmfulness() {
+        double realTimeTaken = gp.timer.secondsSinceStart - start;
+        if(realTimeTaken < expectedTime - Timer.DURATION || realTimeTaken > expectedTime + Timer.DURATION) {
+            harmfulness += 5*Math.max(expectedTime - Timer.DURATION - realTimeTaken,
+                                    realTimeTaken -(expectedTime + Timer.DURATION));
+        }
+    }
+
     public void update() {}
 }
 

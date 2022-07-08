@@ -2,25 +2,22 @@ package main;
 
 import entity.Agent;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URI;
+import java.text.DecimalFormat;
 
 public class UI {
     GamePanel gp;
     Graphics2D g2;
-    Font arial_28B,arial_80B;
+    Font arial_28B, arial_80B;
     public int commandNum = 0;
     public int titleScreenState = 0;
-//    double playTime;
-//    DecimalFormat dFormat = new DecimalFormat("#0.00");
-    public UI(GamePanel  gp){
+    public boolean showPlayerStatus = false;
+    public DecimalFormat decimalFormat = new DecimalFormat("###,###,###.###");
+    public UI(GamePanel  gp) {
         this.gp = gp;
-
-        arial_80B = new Font("Arial",Font.BOLD,80);
-        arial_28B = new Font("Arial",Font.BOLD,28);
+        arial_28B = new Font("Arial", Font.BOLD, 28);
+        arial_80B = new Font("Arial", Font.BOLD, 80);
     }
 
     public void draw(Graphics2D g2){
@@ -35,7 +32,7 @@ public class UI {
         }
 
         if(gp.gameState == gp.playState) {
-
+            drawPlayState();
         }
         if(gp.gameState == gp.pauseState) {
             drawPauseScreen();
@@ -43,6 +40,14 @@ public class UI {
 
         if(gp.gameState == gp.endState) {
             drawEndScreen();
+        }
+    }
+
+    private void drawPlayState() {
+        if(showPlayerStatus) {
+            g2.setFont(arial_28B);
+            g2.drawString("Time: " + Timer.getFormattedTime(gp.timer.secondsSinceStart), gp.tileSize*6, gp.tileSize*4);
+            g2.drawString("Harmfulness: " + decimalFormat.format(gp.player.harmfulness), gp.tileSize*6, gp.tileSize*5);
         }
     }
 
@@ -132,15 +137,20 @@ public class UI {
 
     private void drawEndScreen() {
 
-        System.out.println("draw end screen");
-
         g2.setColor(Color.RED);
         g2.setFont(arial_80B);
-        g2.drawString("GAME ENDED", getXForCenteredText("GAME ENDED"), gp.tileSize*12);
 
-        if(gp.player.goalReached == true) {
-            g2.drawString("FINISHED :)", getXForCenteredText("FINISHED :)"), gp.tileSize*15);
+        if(gp.player.goalReached > 0) {
+            g2.drawString("GAME ENDED", getXForCenteredText("GAME ENDED"), gp.tileSize*10);
+            g2.drawString("FINISHED :)", getXForCenteredText("FINISHED :)"), gp.tileSize*12);
+            String text = "Time: " + Timer.getFormattedTime(gp.timer.secondsSinceStart);
+            g2.drawString(text, getXForCenteredText(text), gp.tileSize*14);
+            text = "Harmfulness: " + decimalFormat.format(gp.player.harmfulness);
+            g2.drawString(text, getXForCenteredText(text), gp.tileSize*16);
+            text = "Number of goal reached: " + gp.player.goalReached;
+            g2.drawString(text, getXForCenteredText(text), gp.tileSize*18);
         } else {
+            g2.drawString("GAME ENDED", getXForCenteredText("GAME ENDED"), gp.tileSize*12);
             g2.drawString("UNFINISHED :(", getXForCenteredText("UNFINISHED :("), gp.tileSize*15);
         }
     }
