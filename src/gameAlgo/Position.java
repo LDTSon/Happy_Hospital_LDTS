@@ -36,10 +36,10 @@ public class Position {
     }
 
     public static void getDesPosition(GamePanel gp){
-        int col = 0;
+        int col = 5;
         int row = 0;
 
-        while(col < gp.maxScreenCol && row < gp.maxScreenRow){
+        while(col < 45 && row < gp.maxScreenRow){
 
             int tileNum = gp.tileM.mapTileNum[col][row];
             boolean check=gp.tileM.tile[tileNum].agvCollision;
@@ -47,11 +47,11 @@ public class Position {
             int x = col*gp.tileSize;
             int y = row*gp.tileSize;
 
-            if(check==false && col>=5 && col<=45) gp.DesPos.add(new Position(x, y));
+            if(check==false) gp.DesPos.add(new Position(x, y));
 
             col++;
 
-            if(col == gp.maxScreenCol){
+            if(col == 45){
                 col = 0;
                 row ++;
             }

@@ -8,6 +8,8 @@ import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.util.Random;
 
+import static java.lang.Math.abs;
+
 public class AutoAgv extends Entity{
 
         private Position startPos;
@@ -19,6 +21,7 @@ public class AutoAgv extends Entity{
         public boolean isFree=false;
         public static int autoAgvNum = 10;
         public static boolean lock=false;
+        public boolean checkUpdateEndPos=false;
 
         Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
         private Text endText = new Text();
@@ -83,6 +86,17 @@ public class AutoAgv extends Entity{
                 int goalCol = endPos.x/gp.tileSize;
                 int goalRow = endPos.y/gp.tileSize;
 
+                if(isOnGate==1 && checkUpdateEndPos==false){
+                    if(x>=46*gp.tileSize){
+                        int tmp1=abs(y-13*gp.tileSize);
+                        int tmp2=abs(y-14*gp.tileSize);
+                        if(tmp1>tmp2){
+                            endPos.y=14*gp.tileSize;
+                        }
+                        else endPos.y=13*gp.tileSize;
+                        checkUpdateEndPos=true;
+                    }
+                }
                 if(searchPath(goalCol, goalRow)==false) {
                     try{
                         eliminate(this);
@@ -190,13 +204,21 @@ public class AutoAgv extends Entity{
                     checkMoveEntity=false;
                 }, 1);
             }
-            if(countTimeDeadLock==600 && lock==false){
-                isFree=true;
-                lock=true;
-                setTimeout(()-> {
-                    isFree=false;
-                    lock=false;
-                }, 2000);
+            if(countTimeDeadLock>=600 && lock==false){
+                int maxCountTime=0;
+                for(int i=0;i<gp.autoAgvs.size();i++){
+                    if(gp.autoAgvs.get(i)!=null){
+                        if(gp.autoAgvs.get(i).countTimeDeadLock>maxCountTime) maxCountTime=gp.autoAgvs.get(i).countTimeDeadLock;
+                    }
+                }
+                if(countTimeDeadLock==maxCountTime){
+                    isFree=true;
+                    lock=true;
+                    setTimeout(()-> {
+                        isFree=false;
+                        lock=false;
+                    }, 2000);
+                }
             }
             if(checkMoveEntity==true && isFree==false) {
                 countTimeDeadLock++;
@@ -230,6 +252,6 @@ public class AutoAgv extends Entity{
             g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);
         }
         public double calculateDes(){
-            return Math.floor(Math.abs(endPos.x- startPos.x)+Math.abs(endPos.y- startPos.y))*0.085;
+            return Math.floor(abs(endPos.x- startPos.x)+ abs(endPos.y- startPos.y))*0.085;
         }
 }

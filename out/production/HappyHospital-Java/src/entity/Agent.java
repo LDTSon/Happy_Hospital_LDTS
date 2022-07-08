@@ -14,6 +14,7 @@ public class Agent extends Entity{
     private int id;
 
     public static int agentNum = 10;
+            ;
 
     Font arial_17 = new Font("Arial",Font.TYPE1_FONT,17);
     private Text endText = new Text();
