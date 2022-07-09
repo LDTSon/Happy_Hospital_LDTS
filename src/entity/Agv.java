@@ -10,8 +10,8 @@ public class Agv extends Entity {
         public boolean isValidDirection = true;
         private boolean isImmortal = false; // biến cần cho xử lý overlap =))
         private boolean isDisable = false; // biến cần cho xử lý overlap =))
-        private int desX;
-        private int desY;
+        private static int desX;
+        private static int desY;
         Font arial_17;
         Font arial_30;
         KeyHandler keyH;
@@ -22,8 +22,11 @@ public class Agv extends Entity {
             this.keyH = keyH;
             setDefaultValues();
             getPlayerImage();
+            desX = x;
+            desY = y;
         }
-        public void setDefaultValues(){
+
+    public void setDefaultValues(){
             x = 2*gp.tileSize;
             y = 13*gp.tileSize;
             speed = 2;

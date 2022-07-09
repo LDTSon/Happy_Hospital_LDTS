@@ -1,10 +1,10 @@
 package main;
 
-public class Timer {
+public class TimeControl {
 
     private static int updatesSinceStart;
 
-    public Timer() {
+    public TimeControl() {
         updatesSinceStart = 0;
     }
 

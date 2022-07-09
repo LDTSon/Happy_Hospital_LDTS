@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
+    public static JFrame window;
     public static void main(String[] args) {
-        JFrame window = new JFrame();
-        window.getDefaultCloseOperation();
+        window = new JFrame();
         window.setResizable(false);
         window.setTitle("Happy Hospital - Em ham mo anh Son");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

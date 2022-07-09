@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Agent extends Entity{
-    private Position startPos;
-    private Position endPos;
-    private int id;
+    public Position startPos;
+    public Position endPos;
+    public int id;
 
     public static int agentNum = 10;
 
@@ -28,8 +28,6 @@ public class Agent extends Entity{
         setDefaultValues();;
         getAgentImage();
     }
-
-
 
     public void setDefaultValues() {
 
@@ -112,7 +110,7 @@ public class Agent extends Entity{
         }
     }
 
-    public void eliminate(Agent agent) {
+    public static void eliminate(Agent agent) {
         gp.agent.remove(agent);
         bornRandomAgent(gp);
     }
@@ -172,4 +170,5 @@ public class Agent extends Entity{
         //DRAW AGENT
         g2.drawImage(entityImage, x, y, gp.tileSize, gp.tileSize, null);
     }
+
 }

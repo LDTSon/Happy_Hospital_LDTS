@@ -10,7 +10,8 @@ import java.lang.String;
 public class Entity {
 
     static GamePanel gp;
-    public int x, y;
+    public int x;
+    public int y;
     public int speed;
     public static int  _id = 0;
     private final int agvID;
@@ -108,22 +109,30 @@ public class Entity {
             System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
             return false;
         }
-        else System.out.println("KHONG TIM DUOC DUONG!!!!!!!"+goalCol+"  " +goalRow);
+        //System.out.println("KHONG TIM DUOC DUONG!!!!!!!"+goalCol+"  " +goalRow);
     }
     public void update() {}
-}
+    public int getX(){
+        return x;
+    }
 
-class Text {
-    int x;
-    int y;
-    int textLength;
-    String text;
-    String fontSize;
-    String color;
-
-    public int getTextLength() {
-        int textLength = this.text.length()*5 + 20;
-        return textLength;
+    public int getY(){
+        return y;
     }
 }
+
+
+    class Text {
+        int x;
+        int y;
+        int textLength;
+        String text;
+        String fontSize;
+        String color;
+
+        public int getTextLength() {
+            int textLength = this.text.length()*5 + 20;
+            return textLength;
+        }
+    }
 
