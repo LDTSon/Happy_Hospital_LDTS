@@ -116,24 +116,22 @@ public class CollisionChecker {
         entity.solidArea.y = entity.solidAreaDefaultY;
         gp.player.solidArea.x = gp.player.solidAreaDefaultX;
         gp.player.solidArea.y = gp.player.solidAreaDefaultY;
-        return;
     }
 
     public void checkMove(AutoAgv entity,int mul) {
 
         int i;
-        int multiply = mul;
         boolean flag = false;
-        switch (entity.direction){
-            case "up":
+        switch (entity.direction) {
+            case "up" -> {
                 //Get entity's solid area position
-                entity.y=entity.y- multiply*entity.speed;
+                entity.y = entity.y - mul * entity.speed;
                 entity.solidArea.x = entity.x + entity.solidArea.x;
                 entity.solidArea.y = entity.y + entity.solidArea.y;
-                for( i=0;i<gp.autoAgvs.size();i++){
-                    if(gp.autoAgvs.get(i)!=null){
-                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
-                        if(flag==true) break;
+                for (i = 0; i < gp.autoAgvs.size(); i++) {
+                    if (gp.autoAgvs.get(i) != null) {
+                        if (entity.agvID == gp.autoAgvs.get(i).agvID) continue;
+                        if (flag) break;
                         //Get the object's solid area position
 
                         gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
@@ -141,74 +139,23 @@ public class CollisionChecker {
 
                         if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
                             entity.checkMoveEntity = true;
-                            flag=true;
+                            flag = true;
                         }
                         gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).solidAreaDefaultX;
                         gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).solidAreaDefaultY;
                     }
                 }
-                entity.y=entity.y + multiply*entity.speed;
-                break;
-            case "down":
+                entity.y = entity.y + mul * entity.speed;
+            }
+            case "down" -> {
                 //Get entity's solid area position
-                entity.y=entity.y+ multiply*entity.speed;
+                entity.y = entity.y + mul * entity.speed;
                 entity.solidArea.x = entity.x + entity.solidArea.x;
                 entity.solidArea.y = entity.y + entity.solidArea.y;
-                flag=false;
-                for( i=0;i<gp.autoAgvs.size();i++){
-                    if(gp.autoAgvs.get(i)!=null){
-                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
-                        if(flag==true) break;
-                        //Get the object's solid area position
-
-                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
-                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
-
-                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
-                            entity.checkMoveEntity=true;
-                            flag=true;
-                        }
-                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).solidAreaDefaultX;
-                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).solidAreaDefaultY;
-                    }
-                }
-                entity.y=entity.y - multiply*entity.speed;
-                break;
-            case "left":
-                //Get entity's solid area position
-                entity.x=entity.x- multiply*entity.speed;
-                entity.solidArea.x = entity.x + entity.solidArea.x;
-                entity.solidArea.y = entity.y + entity.solidArea.y;
-                flag=false;
-                for( i=0;i<gp.autoAgvs.size();i++){
-                    if(gp.autoAgvs.get(i)!=null){
-                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
-                        if(flag==true) break;
-                        //Get the object's solid area position
-
-                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
-                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
-
-                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
-                            entity.checkMoveEntity=true;
-                            flag=true;
-                        }
-                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).solidAreaDefaultX;
-                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).solidAreaDefaultY;
-                    }
-                }
-                entity.x=entity.x+ multiply*entity.speed;
-                break;
-            case "right":
-                //Get entity's solid area position
-                entity.x=entity.x+ multiply*entity.speed;
-                entity.solidArea.x = entity.x + entity.solidArea.x;
-                entity.solidArea.y = entity.y + entity.solidArea.y;
-                flag=false;
-                for( i=0;i<gp.autoAgvs.size();i++){
-                    if(gp.autoAgvs.get(i)!=null){
-                        if(entity.agvID==gp.autoAgvs.get(i).agvID) continue;
-                        if(flag == true) break;
+                for (i = 0; i < gp.autoAgvs.size(); i++) {
+                    if (gp.autoAgvs.get(i) != null) {
+                        if (entity.agvID == gp.autoAgvs.get(i).agvID) continue;
+                        if (flag) break;
                         //Get the object's solid area position
 
                         gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
@@ -216,14 +163,62 @@ public class CollisionChecker {
 
                         if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
                             entity.checkMoveEntity = true;
-                            flag=true;
+                            flag = true;
                         }
                         gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).solidAreaDefaultX;
                         gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).solidAreaDefaultY;
                     }
                 }
-                entity.x=entity.x- multiply*entity.speed;
-                break;
+                entity.y = entity.y - mul * entity.speed;
+            }
+            case "left" -> {
+                //Get entity's solid area position
+                entity.x = entity.x - mul * entity.speed;
+                entity.solidArea.x = entity.x + entity.solidArea.x;
+                entity.solidArea.y = entity.y + entity.solidArea.y;
+                for (i = 0; i < gp.autoAgvs.size(); i++) {
+                    if (gp.autoAgvs.get(i) != null) {
+                        if (entity.agvID == gp.autoAgvs.get(i).agvID) continue;
+                        if (flag) break;
+                        //Get the object's solid area position
+
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
+
+                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
+                            entity.checkMoveEntity = true;
+                            flag = true;
+                        }
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).solidAreaDefaultX;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).solidAreaDefaultY;
+                    }
+                }
+                entity.x = entity.x + mul * entity.speed;
+            }
+            case "right" -> {
+                //Get entity's solid area position
+                entity.x = entity.x + mul * entity.speed;
+                entity.solidArea.x = entity.x + entity.solidArea.x;
+                entity.solidArea.y = entity.y + entity.solidArea.y;
+                for (i = 0; i < gp.autoAgvs.size(); i++) {
+                    if (gp.autoAgvs.get(i) != null) {
+                        if (entity.agvID == gp.autoAgvs.get(i).agvID) continue;
+                        if (flag) break;
+                        //Get the object's solid area position
+
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).x + gp.autoAgvs.get(i).solidArea.x;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).y + gp.autoAgvs.get(i).solidArea.y;
+
+                        if (gp.autoAgvs.get(i).solidArea.intersects(entity.solidArea)) {
+                            entity.checkMoveEntity = true;
+                            flag = true;
+                        }
+                        gp.autoAgvs.get(i).solidArea.x = gp.autoAgvs.get(i).solidAreaDefaultX;
+                        gp.autoAgvs.get(i).solidArea.y = gp.autoAgvs.get(i).solidAreaDefaultY;
+                    }
+                }
+                entity.x = entity.x - mul * entity.speed;
+            }
         }
         entity.solidArea.x = entity.solidAreaDefaultX;
         entity.solidArea.y = entity.solidAreaDefaultY;

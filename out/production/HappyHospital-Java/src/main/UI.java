@@ -1,6 +1,7 @@
 package main;
 
 import entity.Agent;
+import entity.Entity;
 
 import java.awt.*;
 import java.net.URI;
@@ -47,7 +48,8 @@ public class UI {
         if(showPlayerStatus) {
             g2.setFont(arial_28B);
             g2.drawString("Time: " + Timer.getFormattedTime(gp.timer.secondsSinceStart), gp.tileSize*6, gp.tileSize*4);
-            g2.drawString("Harmfulness: " + decimalFormat.format(gp.player.harmfulness), gp.tileSize*6, gp.tileSize*5);
+            g2.drawString("Harmfulness: " + decimalFormat.format(Entity.harmfulness), gp.tileSize*6, gp.tileSize*5);
+            g2.drawString("Goals reached: " + gp.player.goalReached, gp.tileSize*6, gp.tileSize*6);
         }
     }
 
@@ -145,7 +147,7 @@ public class UI {
             g2.drawString("FINISHED :)", getXForCenteredText("FINISHED :)"), gp.tileSize*12);
             String text = "Time: " + Timer.getFormattedTime(gp.timer.secondsSinceStart);
             g2.drawString(text, getXForCenteredText(text), gp.tileSize*14);
-            text = "Harmfulness: " + decimalFormat.format(gp.player.harmfulness);
+            text = "Harmfulness: " + decimalFormat.format(Entity.harmfulness);
             g2.drawString(text, getXForCenteredText(text), gp.tileSize*16);
             text = "Number of goal reached: " + gp.player.goalReached;
             g2.drawString(text, getXForCenteredText(text), gp.tileSize*18);
@@ -196,8 +198,12 @@ public class UI {
         if(commandNum == 2) g2.drawString(">", x - gp.tileSize, y);
         y += lineHeight;
 
-        g2.drawString("Quit game ", x, y);
+        g2.drawString("Save game", x, y);
         if(commandNum == 3) g2.drawString(">", x - gp.tileSize, y);
+        y += lineHeight;
+
+        g2.drawString("Quit game ", x, y);
+        if(commandNum == 4) g2.drawString(">", x - gp.tileSize, y);
         y += lineHeight;
 
         //VALUES

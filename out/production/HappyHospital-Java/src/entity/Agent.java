@@ -9,9 +9,9 @@ import java.util.Random;
 public class Agent extends Entity{
 
     public static boolean[] idListCheck = new boolean[1000];
-    private Position startPos;
-    private Position endPos;
-    private int id;
+    public Position startPos;
+    public Position endPos;
+    public int id;
 
     public static int agentNum = 10;
 

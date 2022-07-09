@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.String;
+import java.util.Objects;
+
 public class Entity {
 
     static GamePanel gp;
@@ -25,7 +27,6 @@ public class Entity {
     public int expectedTime;
 
     public int solidAreaDefaultX,solidAreaDefaultY;
-    public int actionLockCounter = 0;
     public Text entityText = new Text();
     public boolean onPath = true;
     public static double harmfulness = 0;
@@ -42,11 +43,11 @@ public class Entity {
 
     public BufferedImage setup(String imageName) {
 
-        UtilityTool uTool = new UtilityTool();
+        UtilityTool uTool = new UtilityTool(gp);
         BufferedImage image = null;
 
         try{
-            image = ImageIO.read(getClass().getResourceAsStream("/res/" + imageName + ".png"));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/" + imageName + ".png")));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize, "entity");
         }catch (IOException e){
             e.printStackTrace();
@@ -61,7 +62,7 @@ public class Entity {
         int startCol = (x + solidArea.x)/gp.tileSize;
         int startRow = (y + solidArea.y)/gp.tileSize;
         gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
-        if(gp.pFinder.search(this) == true) {
+        if(gp.pFinder.search(this)) {
             //Next x & y
             int nextX = gp.pFinder.pathList.get(0).col*gp.tileSize;
             int nextY = gp.pFinder.pathList.get(0).row*gp.tileSize;
@@ -83,25 +84,25 @@ public class Entity {
                 //up or left
                 direction = "up";
                 gp.cChecker.checkTile(this);
-                if(collisionOn == true) direction = "left";
+                if(collisionOn) direction = "left";
             }
             else if(enTopY > nextY && enLeftX < nextX) {
                 //up or right
                 direction = "up";
                 gp.cChecker.checkTile(this);
-                if(collisionOn == true) direction = "right";
+                if(collisionOn) direction = "right";
             }
             else if(enTopY < nextY && enLeftX > nextX) {
                 //down or left
                 direction = "down";
                 gp.cChecker.checkTile(this);
-                if(collisionOn == true) direction = "left";
+                if(collisionOn) direction = "left";
             }
             else if(enTopY < nextY && enLeftX < nextX) {
                 //down or right
                 direction = "down";
                 gp.cChecker.checkTile(this);
-                if(collisionOn == true) direction = "right";
+                if(collisionOn) direction = "right";
             }
             int nextCol = gp.pFinder.pathList.get(0).col;
             int nextRow = gp.pFinder.pathList.get(0).row;
@@ -126,6 +127,13 @@ public class Entity {
         }
     }
 
+    public void appendAgvDeadline() {
+        String outPut="";
+        outPut += "DES_" + this.agvID + ": ";
+        outPut += Timer.getFormattedTime(this.expectedTime);
+        gp.sc.ta.append(outPut + "\n");
+    }
+
     public void update() {}
 }
 
@@ -138,8 +146,7 @@ class Text {
     String color;
 
     public int getTextLength() {
-        int textLength = this.text.length()*5 + 20;
-        return textLength;
+        return this.text.length()*5 + 20;
     }
 }
 

@@ -85,7 +85,7 @@ public class TileManager {
 
     public void setup(int index, String imageName, boolean agvCollision, boolean agentCollision) {
 
-        UtilityTool uTool = new UtilityTool();
+        UtilityTool uTool = new UtilityTool(gp);
 
         try{
             tile[index] = new Tile();
