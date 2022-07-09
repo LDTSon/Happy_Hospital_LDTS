@@ -3,7 +3,6 @@ package main;
 import entity.Agent;
 import entity.Agv;
 import entity.AutoAgv;
-import entity.Entity;
 import gameAlgo.Position;
 import gameAlgo.algorithm.PathFinder;
 import tilesMap.TileManager;
@@ -24,7 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize*maxScreenRow;//28*32
 
     //FPS
-    int FPS = 120;
+    int FPS = 30;
 
     public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
@@ -39,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList<Agent> agents = new ArrayList<>();
     public ArrayList<Position> doorPos = new ArrayList<>();
     public ArrayList<Position> desPos = new ArrayList<>();
-    public ArrayList<AutoAgv> autoAgvs = new ArrayList<AutoAgv>();
+    public ArrayList<AutoAgv> autoAgvs = new ArrayList<>();
 
     public int gameState;
     public final int titleState = 0;

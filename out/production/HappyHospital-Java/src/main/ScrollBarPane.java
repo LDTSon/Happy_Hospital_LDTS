@@ -6,7 +6,7 @@ import java.awt.*;
 public class ScrollBarPane extends JFrame{
 
     public JTextArea ta;
-    JFrame frame;
+    //JFrame frame;
 
     public ScrollBarPane(){
 

@@ -1,6 +1,7 @@
 package main;
 
 import entity.Agent;
+import entity.Agv;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -47,7 +48,10 @@ public class KeyHandler implements KeyListener {
                         gp.ui.titleScreenState = 1;
                         gp.ui.commandNum = 0;
                     }
-                    case 1 -> {}
+                    case 1 -> {
+                        UtilityTool.importJSON();
+                        gp.player.appendAgvDeadline();
+                    }
                     case 2 -> System.exit(0);
                 }
             }
@@ -63,6 +67,8 @@ public class KeyHandler implements KeyListener {
                 if(gp.ui.commandNum > 4) gp.ui.commandNum = 0;
             }
             if(code == KeyEvent.VK_ENTER){
+                gp.player.appendAgvDeadline();
+
                 switch (gp.ui.commandNum) {
                     case 0 -> {
                         gp.player.entityImage = gp.player.agvImage[0];
@@ -115,11 +121,11 @@ public class KeyHandler implements KeyListener {
     public void pauseState(int code) {
         if(code == KeyEvent.VK_W){
             gp.ui.commandNum--;
-            if(gp.ui.commandNum < 0) gp.ui.commandNum = 3;
+            if(gp.ui.commandNum < 0) gp.ui.commandNum = 4;
         }
         if(code == KeyEvent.VK_S){
             gp.ui.commandNum++;
-            if(gp.ui.commandNum > 3) gp.ui.commandNum = 0;
+            if(gp.ui.commandNum > 4) gp.ui.commandNum = 0;
         }
         if(code == KeyEvent.VK_ENTER){
             switch (gp.ui.commandNum) {
@@ -128,7 +134,10 @@ public class KeyHandler implements KeyListener {
                     if(Agent.agentNum > 0) Agent.agentNum--;
                 }
                 case 2 -> gp.ui.openWebpage(URI.create("https://github.com/phamtuanhien/Project20211_HappyHospital"));
-                case 3 -> System.exit(0);
+                case 3 -> {
+                    UtilityTool.exportJSON();
+                }
+                case 4 -> System.exit(0);
             }
         }
         if(code == KeyEvent.VK_P) {

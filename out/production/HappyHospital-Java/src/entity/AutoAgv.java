@@ -67,10 +67,7 @@ public class AutoAgv extends Entity{
         estimateArrivalTime(startPos.x, startPos.y, endPos.x, endPos.y);
 
         //AUTOAGV DEADLINE
-        String outPut="";
-        outPut += "DES_" + this.agvID + ": ";
-        outPut += Timer.getFormattedTime(this.expectedTime);
-        gp.sc.ta.append(outPut + "\n");
+        appendAgvDeadline();
     }
 
     public void getAutoAgvImage(){

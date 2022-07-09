@@ -13,11 +13,11 @@ import java.util.Random;
 
 public class Agv extends Entity {
 
-    public BufferedImage agvImage[] = new BufferedImage[4];
+    public BufferedImage[] agvImage = new BufferedImage[4];
     public boolean isValidDirection = true;
     private boolean isImmortal = false; // biến cần cho xử lý overlap =))
     private boolean isDisable = false; // biến cần cho xử lý overlap =))
-    private Position goalPos;
+    public Position goalPos;
     public int goalReached;
     private Text goalText = new Text();
     Font arial_17;
@@ -59,11 +59,7 @@ public class Agv extends Entity {
 
         this.estimateArrivalTime(x, y, goalPos.x, goalPos.y);
 
-        //AGV DEADLINE
-        String outPut="";
-        outPut += "DES_" + this.agvID + ": ";
-        outPut += Timer.getFormattedTime(this.expectedTime);
-        gp.sc.ta.append(outPut + "\n");
+        //AGV DEADLINE, APPEND LATER
     }
     public void getPlayerImage(){
 
@@ -154,10 +150,12 @@ public class Agv extends Entity {
             }
 
             //CHECK IF AGV TOUCH GOAL
-            if(goalPos.x - 12 <= x && x <= goalPos.x + 12 &&
-                    goalPos.y - 12 <= y && y <= goalPos.y + 12) {
+            if(goalPos.x - 6 <= x && x <= goalPos.x + 6 &&
+                    goalPos.y - 6 <= y && y <= goalPos.y + 6) {
                 goalReached++;
                 calHarmfulness();
+                this.speed = 0;
+                setTimeout(() -> {this.speed = 1;}, 1000);
 //                reachToDestination();
                 try {
                     gp.sc.ta.replaceRange("", gp.sc.ta.getLineStartOffset(0), gp.sc.ta.getLineEndOffset(0));
