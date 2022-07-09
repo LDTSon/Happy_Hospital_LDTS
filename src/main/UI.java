@@ -133,7 +133,7 @@ public class UI {
                 gp.gameState = gp.pauseState;
                 drawPauseScreen(2);
                 exportJSON();
-
+                gp.gameState = gp.playState;
                 gp.requestFocusInWindow();
             }
         });
@@ -276,17 +276,16 @@ public class UI {
             gp.player.y = map.agvPos[1];
 
             SaveAgent mapAgents = map.agents;
-            while(!gp.agent.isEmpty()) {
-                for(int i =0; i < agentNum; i++) {
-                    Agent.eliminate(gp.agent.get(i));
-                    System.out.println("check");
-                }
-            }
+//            while(!gp.agent.isEmpty()) {
+//                    Agent.eliminate(gp.agent.get(0));
+//                    System.out.println("check");
+//            }
+            gp.agent.removeAll(gp.agent);
             int n = mapAgents.id.length;
             for(int i = 0; i < n; i++) {
                 if(mapAgents.startPos[i] != null) {
-                    gp.agent.add(new Agent(gp, new Position(mapAgents.startPos[i][0] / 32, mapAgents.startPos[i][1] / 32),
-                            new Position(mapAgents.endPos[i][0] / 32, mapAgents.endPos[i][1] / 32),  mapAgents.id[i]));
+                    gp.agent.add(new Agent(gp, new Position(mapAgents.startPos[i][0], mapAgents.startPos[i][1]),
+                            new Position(mapAgents.endPos[i][0], mapAgents.endPos[i][1]),  mapAgents.id[i]));
                 }
             }
             reader.close();
