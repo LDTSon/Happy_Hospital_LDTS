@@ -109,7 +109,7 @@ public class Entity {
             if(nextCol == goalCol && nextRow == goalRow) onPath = false;
             return true;
         } else {
-            System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
+            //System.out.println("stuck " + startCol + " " + startRow + " " + goalCol + " " + goalRow);
             return false;
         }
     }
