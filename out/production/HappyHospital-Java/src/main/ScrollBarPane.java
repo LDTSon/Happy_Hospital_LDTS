@@ -26,7 +26,7 @@ public class ScrollBarPane extends JFrame{
         frame.add(sp);
 
         frame.setSize(280, 400);
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 }
