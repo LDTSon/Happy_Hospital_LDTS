@@ -154,8 +154,8 @@ public class Agv extends Entity {
             }
 
             //CHECK IF AGV TOUCH GOAL
-            if(goalPos.x - 4 <= x && x <= goalPos.x + 4 &&
-                    goalPos.y - 4 <= y && y <= goalPos.y + 4) {
+            if(goalPos.x - 12 <= x && x <= goalPos.x + 12 &&
+                    goalPos.y - 12 <= y && y <= goalPos.y + 12) {
                 goalReached++;
                 calHarmfulness();
 //                reachToDestination();
