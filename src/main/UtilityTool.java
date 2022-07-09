@@ -49,7 +49,7 @@ public class UtilityTool {
         }
         int [] agvDesPos = {gp.player.goalPos.x, gp.player.goalPos.y};
         SaveAgv agv = new SaveAgv(agvPos, agvImage, agvDesPos, gp.player.start, gp.player.expectedTime, gp.player.goalReached);
-        int n = Agent.agentNum;
+        int n = gp.agents.size();
         int[][] startPos = new int[n][2];
         int[][] endPos = new int[n][2];
         int[] AgentId = new int[n];
